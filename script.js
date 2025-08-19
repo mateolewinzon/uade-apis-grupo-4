@@ -3,7 +3,6 @@ async function loadUsers() {
     const loading = document.getElementById('loading');
     const error = document.getElementById('error');
     const tableContainer = document.getElementById('tableContainer');
-    const tableBody = document.getElementById('usersTableBody');
     
     try {
         // Mostrar loading
@@ -33,6 +32,9 @@ async function loadUsers() {
 
 // Función para mostrar usuarios en la tabla
 function displayUsers(users) {
+
+    // display hidden 
+    
     const tableContainer = document.getElementById('tableContainer');
     const tableBody = document.getElementById('usersTableBody');
     
@@ -60,8 +62,7 @@ function displayUsers(users) {
 }
 
 
-
 // Cargar usuarios cuando la página se cargue
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     loadUsers();
 });

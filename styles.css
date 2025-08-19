@@ -50,11 +50,6 @@ header p {
     margin: 0 auto 20px;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 .error {
     text-align: center;
     padding: 40px;
@@ -135,28 +130,4 @@ footer {
     margin-top: 40px;
     color: white;
     opacity: 0.8;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    header h1 {
-        font-size: 2rem;
-    }
-    
-    .table-container {
-        padding: 10px;
-    }
-    
-    th, td {
-        padding: 10px 8px;
-        font-size: 0.9rem;
-    }
-    
-    table {
-        font-size: 0.8rem;
-    }
 }
