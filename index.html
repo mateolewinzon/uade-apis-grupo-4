@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios - API Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Lista de Usuarios</h1>
+            <p>Datos obtenidos desde JSONPlaceholder API</p>
+        </header>
+        
+        <main>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Cargando usuarios...</p>
+            </div>
+            
+            <div class="error" id="error" style="display: none;">
+                <p>❌ Error al cargar los datos. Intenta de nuevo.</p>
+                <button onclick="loadUsers()">Reintentar</button>
+            </div>
+            
+            <div class="table-container" id="tableContainer" style="display: none;">
+                <table id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Ciudad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Los datos se cargarán dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Desarrollado con HTML, CSS y JavaScript</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
