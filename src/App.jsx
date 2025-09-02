@@ -1,13 +1,18 @@
-import './App.css'
-import ProductList from './components/ProductList'
-import Container from './components/Container'
-function App() {
+import "./App.css";
+import ProductList from "./components/ProductList";
+import Container from "./components/Container";
+import { CartProvider } from "./context/CartContext";
+import Navbar from "./components/Navbar";
 
+function App() {
   return (
-    <Container>
-      <ProductList />
-    </Container>
-  )
+    <CartProvider>
+      <Container>
+        <Navbar />
+        <ProductList />
+      </Container>
+    </CartProvider>
+  );
 }
 
-export default App
+export default App;

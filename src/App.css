@@ -40,3 +40,70 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Navbar Styles */
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.navbar-brand h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.navbar-cart {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-icon {
+  position: relative;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.cart-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.cart-items {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.cart-total {
+  font-weight: bold;
+  font-size: 1rem;
+}
