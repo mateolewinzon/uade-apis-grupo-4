@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useCart } from '../../context/CartContext';
 import { ShoppingCart } from 'lucide-react';
@@ -6,8 +7,8 @@ import { ShoppingCart } from 'lucide-react';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
-  const {cart} = useCart();
-
+  const { cart } = useCart();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -17,15 +18,26 @@ export const Header = () => {
     setIsProductsDropdownOpen(!isProductsDropdownOpen);
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+    setIsMenuOpen(false);
+  };
+
+  const handleLinkClick = () => {
+    setIsMenuOpen(false);
+    setIsProductsDropdownOpen(false);
+  };
+
   return (
     <header className="header">
       <div className="header-container">
-
-        <div className="logo">
+        {/* Logo - Navegable al home */}
+        <div className="logo" onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
           <span className="logo-icon">🧉</span>
           <span className="logo-text">MateMarket</span>
         </div>
 
+        {/* Desktop Navigation */}
         <nav className="desktop-nav">
           <div 
             className="nav-item dropdown"
@@ -35,24 +47,42 @@ export const Header = () => {
             <span className="nav-link">Productos</span>
             {isProductsDropdownOpen && (
               <div className="dropdown-menu">
-                <a href="#" className="dropdown-item">Mates</a>
-                <a href="#" className="dropdown-item">Bombillas</a>
-                <a href="#" className="dropdown-item">Yerbas</a>
-                <a href="#" className="dropdown-item">Accesorios</a>
-                <a href="#" className="dropdown-item">Sets Completos</a>
+                <Link to="/categoria/mates" className="dropdown-item" onClick={handleLinkClick}>
+                  Mates
+                </Link>
+                <Link to="/categoria/bombillas" className="dropdown-item" onClick={handleLinkClick}>
+                  Bombillas
+                </Link>
+                <Link to="/categoria/yerba" className="dropdown-item" onClick={handleLinkClick}>
+                  Yerba
+                </Link>
+                <Link to="/categoria/accesorios" className="dropdown-item" onClick={handleLinkClick}>
+                  Accesorios
+                </Link>
+                <Link to="/categoria/kits" className="dropdown-item" onClick={handleLinkClick}>
+                  Kits
+                </Link>
               </div>
             )}
           </div>
-          <a href="#" className="nav-link">Vendedores</a>
-          <a href="#" className="nav-link">Vender</a>
+          <NavLink to="/vendedores" className="nav-link" onClick={handleLinkClick}>
+            Vendedores
+          </NavLink>
+          <NavLink to="/vender" className="nav-link" onClick={handleLinkClick}>
+            Vender
+          </NavLink>
         </nav>
 
+        {/* Header Actions */}
         <div className="header-actions">
-          <div className="cart">
-            <span className="cart-icon"> <ShoppingCart /> </span>
+          <Link to="/carrito" className="cart" onClick={handleLinkClick}>
+            <span className="cart-icon">
+              <ShoppingCart />
+            </span>
             <span className="cart-text">Carrito ({cart.length})</span>
-          </div>
+          </Link>
           
+          {/* Hamburger Menu Button */}
           <button 
             className="hamburger"
             onClick={toggleMenu}
@@ -65,6 +95,7 @@ export const Header = () => {
         </div>
       </div>
 
+      {/* Mobile Navigation */}
       <nav className={`mobile-nav ${isMenuOpen ? 'open' : ''}`}>
         <div className="mobile-nav-content">
           <div className="mobile-nav-item">
@@ -77,16 +108,30 @@ export const Header = () => {
             </button>
             {isProductsDropdownOpen && (
               <div className="mobile-dropdown">
-                <a href="#" className="mobile-dropdown-item">Mates</a>
-                <a href="#" className="mobile-dropdown-item">Bombillas</a>
-                <a href="#" className="mobile-dropdown-item">Yerbas</a>
-                <a href="#" className="mobile-dropdown-item">Accesorios</a>
-                <a href="#" className="mobile-dropdown-item">Sets Completos</a>
+                <Link to="/categoria/mates" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Mates
+                </Link>
+                <Link to="/categoria/bombillas" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Bombillas
+                </Link>
+                <Link to="/categoria/yerba" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Yerba
+                </Link>
+                <Link to="/categoria/accesorios" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Accesorios
+                </Link>
+                <Link to="/categoria/kits" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Kits
+                </Link>
               </div>
             )}
           </div>
-          <a href="#" className="mobile-nav-link">Vendedores</a>
-          <a href="#" className="mobile-nav-link">Vender</a>
+          <NavLink to="/vendedores" className="mobile-nav-link" onClick={handleLinkClick}>
+            Vendedores
+          </NavLink>
+          <NavLink to="/vender" className="mobile-nav-link" onClick={handleLinkClick}>
+            Vender
+          </NavLink>
         </div>
       </nav>
     </header>
