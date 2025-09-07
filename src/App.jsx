@@ -9,8 +9,7 @@ import { DetailProduct } from "./components/DetailProduct/DetailProduct";
 import { Cart } from "./components/Checkout/Cart";
 import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
-import { DashboardSeller } from "./components/DashboardSeller/DashboardSeller";
-import { FormProduct } from "./components/FormProduct/FormProduct";
+import { VenderPage } from "./components/VenderPage";
 
 // Configuración de rutas
 const routes = [
@@ -45,19 +44,9 @@ const routes = [
   
   // Vendedores
   {
-    path: "/dashboard",
-    element: <DashboardSeller />,
-    name: "Seller Dashboard"
-  },
-  {
     path: "/vender",
-    element: <FormProduct />,
-    name: "Add Product"
-  },
-  {
-    path: "/producto/editar/:id",
-    element: <FormProduct />,
-    name: "Edit Product"
+    element: <VenderPage />,
+    name: "Vender"
   },
   {
     path: "/vendedores",
