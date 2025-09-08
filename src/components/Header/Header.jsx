@@ -1,31 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useCart } from '../../context/CartContext';
-import { ShoppingCart } from 'lucide-react';
+import { useUser } from '../../context/UserContext'; // Importamos el hook de usuario
+import { ShoppingCart, User, LogOut } from 'lucide-react'; // Importamos iconos adicionales
 
 export const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const { cart, toggleCart } = useCart();
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false); // Estado para dropdown de usuario
+  const { cart } = useCart();
+  const { user, logout, isAuthenticated } = useUser(); // Obtenemos datos del usuario del contexto
   const navigate = useNavigate();
+  const userMenuRef = useRef(null); // Referencia para el menú de usuario
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // useEffect para cerrar el dropdown cuando se hace click fuera de él
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    // Solo agregar el event listener si el dropdown está abierto
+    if (isUserDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Limpiar el event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isUserDropdownOpen]);
 
   const toggleProductsDropdown = () => {
     setIsProductsDropdownOpen(!isProductsDropdownOpen);
   };
 
+  // Función para manejar el dropdown del usuario
+  const toggleUserDropdown = () => {
+    setIsUserDropdownOpen(!isUserDropdownOpen);
+  };
+
+  // Función para manejar el logout
+  const handleLogout = () => {
+    logout(); // Llamamos a la función logout del contexto
+    setIsUserDropdownOpen(false);
+    navigate('/'); // Redirigimos al home
+  };
+
   const handleLogoClick = () => {
     navigate('/');
-    setIsMenuOpen(false);
   };
 
   const handleLinkClick = () => {
-    setIsMenuOpen(false);
     setIsProductsDropdownOpen(false);
+    setIsUserDropdownOpen(false); // Cerramos también el dropdown de usuario
   };
 
   return (
@@ -82,58 +112,54 @@ export const Header = () => {
             <span className="cart-text">Carrito ({cart.length})</span>
           </button>
           
-          {/* Hamburger Menu Button */}
-          <button 
-            className="hamburger"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
-          </button>
+          {/* Sección de usuario - Mostramos diferentes contenidos según si está logueado o no */}
+          {isAuthenticated() ? (
+            // Usuario logueado - Mostramos dropdown con opciones (controlado por click)
+            <div 
+              ref={userMenuRef}
+              className="user-menu dropdown"
+              onClick={toggleUserDropdown}
+            >
+              <div className="user-info">
+                <img 
+                  src={user.avatar} 
+                  alt={user.username} 
+                  className="user-avatar"
+                />
+                <span className="user-name">Hola, {user.nombre}</span>
+                <span className={`dropdown-arrow ${isUserDropdownOpen ? 'open' : ''}`}>▼</span>
+              </div>
+              {isUserDropdownOpen && (
+                <div className="dropdown-menu user-dropdown">
+                  <div className="dropdown-item user-details">
+                    <strong>{user.nombre} {user.apellido}</strong>
+                    <small>{user.email}</small>
+                  </div>
+                  <hr />
+                  <Link to="/dashboard" className="dropdown-item" onClick={handleLinkClick}>
+                    <User size={16} />
+                    Mi Dashboard
+                  </Link>
+                  <button className="dropdown-item logout-btn" onClick={handleLogout}>
+                    <LogOut size={16} />
+                    Cerrar Sesión
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            // Usuario no logueado - Mostramos enlaces de login y registro
+            <div className="auth-links">
+              <Link to="/login" className="auth-link login-link" onClick={handleLinkClick}>
+                Iniciar Sesión
+              </Link>
+              <Link to="/register" className="auth-link register-link" onClick={handleLinkClick}>
+                Registrarse
+              </Link>
+            </div>
+          )}
         </div>
       </div>
-
-      {/* Mobile Navigation */}
-      <nav className={`mobile-nav ${isMenuOpen ? 'open' : ''}`}>
-        <div className="mobile-nav-content">
-          <div className="mobile-nav-item">
-            <button 
-              className="mobile-nav-link dropdown-toggle"
-              onClick={toggleProductsDropdown}
-            >
-              Productos
-              <span className={`arrow ${isProductsDropdownOpen ? 'up' : 'down'}`}>▼</span>
-            </button>
-            {isProductsDropdownOpen && (
-              <div className="mobile-dropdown">
-                <Link to="/categoria/mates" className="mobile-dropdown-item" onClick={handleLinkClick}>
-                  Mates
-                </Link>
-                <Link to="/categoria/bombillas" className="mobile-dropdown-item" onClick={handleLinkClick}>
-                  Bombillas
-                </Link>
-                <Link to="/categoria/yerba" className="mobile-dropdown-item" onClick={handleLinkClick}>
-                  Yerba
-                </Link>
-                <Link to="/categoria/accesorios" className="mobile-dropdown-item" onClick={handleLinkClick}>
-                  Accesorios
-                </Link>
-                <Link to="/categoria/kits" className="mobile-dropdown-item" onClick={handleLinkClick}>
-                  Kits
-                </Link>
-              </div>
-            )}
-          </div>
-          <NavLink to="/vendedores" className="mobile-nav-link" onClick={handleLinkClick}>
-            Vendedores
-          </NavLink>
-          <NavLink to="/vender" className="mobile-nav-link" onClick={handleLinkClick}>
-            Vender
-          </NavLink>
-        </div>
-      </nav>
     </header>
   );
 };
