@@ -11,6 +11,7 @@
         "badge": "Más Vendido",
         "rating": 4.8,
         "reviews": 124,
+        "stock": 15,
         "seller": {
           "id": 1,
           "username": "JP Mates"
@@ -27,6 +28,7 @@
         "badge": "Premium",
         "rating": 4.9,
         "reviews": 89,
+        "stock": 8,
         "seller": {
           "id": 2,
           "username": "MG Mates"
@@ -43,6 +45,7 @@
         "badge": "Oferta",
         "rating": 4.7,
         "reviews": 156,
+        "stock": 0,
         "seller": {
           "id": 3,
           "username": "CR Mates"
@@ -59,9 +62,44 @@
         "badge": "Kit Completo",
         "rating": 4.6,
         "reviews": 203,
+        "stock": 12,
         "seller": {
           "id": 1,
           "username": "JP Mates"
+        }
+      },
+      {
+        "id": 5,
+        "name": "Yerba Mate Premium Orgánica",
+        "description": "Yerba mate orgánica de primera calidad, cultivada sin pesticidas. Sabor suave y equilibrado, perfecta para el mate tradicional.",
+        "category": "Yerba",
+        "price": "$3.200",
+        "originalPrice": null,
+        "image": "/placeholder.jpg",
+        "badge": "Orgánica",
+        "rating": 4.5,
+        "reviews": 67,
+        "stock": 25,
+        "seller": {
+          "id": 2,
+          "username": "MG Mates"
+        }
+      },
+      {
+        "id": 6,
+        "name": "Termo Acero Inoxidable 1L",
+        "description": "Termo de acero inoxidable de 1 litro, mantiene la temperatura por 8 horas. Ideal para llevar el mate a cualquier lugar.",
+        "category": "Accesorios",
+        "price": "$7.800",
+        "originalPrice": "$9.500",
+        "image": "/mate-accessories-thermos-yerbera.jpg",
+        "badge": "Oferta",
+        "rating": 4.7,
+        "reviews": 98,
+        "stock": 6,
+        "seller": {
+          "id": 3,
+          "username": "CR Mates"
         }
       }
     ],

@@ -22,7 +22,25 @@
 .featured-subtitle {
   color: var(--primary);
   font-size: 1.2rem;
-  margin: 0;
+  margin: 0 0 1rem 0;
+}
+
+.back-to-catalog {
+  display: inline-block;
+  background: #3498db;
+  color: white;
+  text-decoration: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.back-to-catalog:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .products-grid {

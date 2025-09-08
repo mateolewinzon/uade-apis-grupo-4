@@ -1,8 +1,10 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductList from "./components/ProductsList/ProductList";
+import { Home } from "./components/Home/Home";
 import Container from "./components/Container";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { DetailProduct } from "./components/DetailProduct/DetailProduct";
@@ -17,7 +19,7 @@ const routes = [
   // Rutas principales
   {
     path: "/",
-    element: <ProductList />,
+    element: <Home />,
     name: "Home"
   },
   {
@@ -107,23 +109,25 @@ const routes = [
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <Header />
-        <Container>
-          <Routes>
-            {routes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Routes>
-        </Container>
-        <Footer />
-      </Router>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <Header />
+          <Container>
+            <Routes>
+              {routes.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+            </Routes>
+          </Container>
+          <Footer />
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import { ShoppingCart } from 'lucide-react';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const { cart } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -26,6 +28,12 @@ export const Header = () => {
   const handleLinkClick = () => {
     setIsMenuOpen(false);
     setIsProductsDropdownOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    setIsMenuOpen(false);
   };
 
   return (
@@ -75,12 +83,34 @@ export const Header = () => {
 
         {/* Header Actions */}
         <div className="header-actions">
-          <Link to="/carrito" className="cart" onClick={handleLinkClick}>
-            <span className="cart-icon">
-              <ShoppingCart />
-            </span>
-            <span className="cart-text">Carrito ({cart.length})</span>
-          </Link>
+          {isAuthenticated && (
+            <Link to="/carrito" className="cart" onClick={handleLinkClick}>
+              <span className="cart-icon">
+                <ShoppingCart />
+              </span>
+              <span className="cart-text">Carrito ({cart.length})</span>
+            </Link>
+          )}
+          
+          {isAuthenticated ? (
+            <div className="user-menu">
+              <div className="user-info">
+                <img 
+                  src={user?.avatar || "/placeholder-user.jpg"} 
+                  alt="Avatar" 
+                  className="user-avatar"
+                />
+                <span className="user-name">{user?.name}</span>
+              </div>
+              <button onClick={handleLogout} className="logout-btn">
+                Cerrar Sesión
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="login-btn">
+              Iniciar Sesión
+            </Link>
+          )}
           
           {/* Hamburger Menu Button */}
           <button 
