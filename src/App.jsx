@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductList from "./components/ProductsList/ProductList";
 import Container from "./components/Container";
 import { CartProvider } from "./context/CartContext";
+import { UserProvider } from "./context/UserContext"; // Importamos el UserProvider
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { DetailProduct } from "./components/DetailProduct/DetailProduct";
 import { Cart } from "./components/Checkout/Cart";
 import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
-import { DashboardSeller } from "./components/DashboardSeller/DashboardSeller";
-import { FormProduct } from "./components/FormProduct/FormProduct";
+import { VenderPage } from "./components/VenderPage";
 
 // Configuración de rutas
 const routes = [
@@ -45,19 +45,9 @@ const routes = [
   
   // Vendedores
   {
-    path: "/dashboard",
-    element: <DashboardSeller />,
-    name: "Seller Dashboard"
-  },
-  {
     path: "/vender",
-    element: <FormProduct />,
-    name: "Add Product"
-  },
-  {
-    path: "/producto/editar/:id",
-    element: <FormProduct />,
-    name: "Edit Product"
+    element: <VenderPage />,
+    name: "Vender"
   },
   {
     path: "/vendedores",
@@ -107,23 +97,27 @@ const routes = [
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <Header />
-        <Container>
-          <Routes>
-            {routes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Routes>
-        </Container>
-        <Footer />
-      </Router>
-    </CartProvider>
+    // Envolvemos toda la aplicación con UserProvider y CartProvider
+    // Esto permite que cualquier componente acceda al estado del usuario y del carrito
+    <UserProvider>
+      <CartProvider>
+        <Router>
+          <Header />
+          <Container>
+            <Routes>
+              {routes.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+            </Routes>
+          </Container>
+          <Footer />
+        </Router>
+      </CartProvider>
+    </UserProvider>
   );
 }
 

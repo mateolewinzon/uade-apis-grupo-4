@@ -234,4 +234,100 @@
         "verified": true
       }
     ]
+{
+  "productos": [
+    {
+      "id": "1",
+      "name": "Mate Imperial Calabaza Premium",
+      "description": "Mate de calabaza premium con detalles en plata. Perfecto para los amantes del mate tradicional que buscan calidad y elegancia en cada cebada.",
+      "category": "Mates",
+      "price": "$12.500",
+      "originalPrice": "$15.000",
+      "image": "/premium-calabaza-mate-gourd-with-silver-details.jpg",
+      "badge": "Más Vendido",
+      "rating": 4.8,
+      "reviews": 124,
+      "seller": {
+        "id": 1,
+        "username": "JP Mates"
+      }
+    },
+    {
+      "id": "2",
+      "name": "Bombilla Alpaca Cincelada",
+      "description": "Bombilla de alpaca finamente cincelada a mano. Diseño artesanal único que combina funcionalidad y belleza para una experiencia de mate excepcional.",
+      "category": "Bombillas",
+      "price": "$8.900",
+      "originalPrice": null,
+      "image": "/engraved-alpaca-bombilla-mate-straw.jpg",
+      "badge": "Premium",
+      "rating": 4.9,
+      "reviews": 89,
+      "seller": {
+        "id": 2,
+        "username": "MG Mates"
+      }
+    },
+    {
+      "id": "3",
+      "name": "Mate Camionero Forrado",
+      "description": "Mate camionero con forro de cuero resistente. Ideal para viajes largos y uso intensivo. Mantiene la temperatura perfecta por más tiempo.",
+      "category": "Mates",
+      "price": "$18.500",
+      "originalPrice": "$22.000",
+      "image": "/leather-wrapped-camionero-mate-gourd.jpg",
+      "badge": "Oferta",
+      "rating": 4.7,
+      "reviews": 156,
+      "seller": {
+        "id": 3,
+        "username": "CR Mates"
+      }
+    },
+    {
+      "id": "4",
+      "name": "Set Completo Principiante",
+      "description": "Kit completo perfecto para comenzar en el mundo del mate. Incluye mate, bombilla, yerbera y manual de instrucciones. Todo lo necesario para disfrutar del mate desde el primer día.",
+      "category": "Kits",
+      "price": "$25.900",
+      "originalPrice": "$32.000",
+      "image": "/complete-mate-starter-set-with-gourd-bombilla-and-.jpg",
+      "badge": "Kit Completo",
+      "rating": 4.6,
+      "reviews": 203,
+      "seller": {
+        "id": 1,
+        "username": "JP Mates"
+      }
+    }
+  ],
+  "usuarios": [
+    {
+      "id": "1",
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "username": "JP Mates",
+      "email": "juan.perez@email.com",
+      "password": "123456",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=juan"
+    },
+    {
+      "id": "2",
+      "nombre": "María",
+      "apellido": "García",
+      "username": "MG Mates",
+      "email": "maria.garcia@email.com",
+      "password": "123456",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=maria"
+    },
+    {
+      "id": "3",
+      "nombre": "Carlos",
+      "apellido": "Rodríguez",
+      "username": "CR Mates",
+      "email": "carlos.rodriguez@email.com",
+      "password": "123456",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=carlos"
+    }
+  ]
 }
