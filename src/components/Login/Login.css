@@ -1,0 +1,289 @@
+/* Contenedor principal del formulario de login */
+.login-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Tarjeta que contiene el formulario */
+.login-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  padding: 3rem;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* Encabezado del formulario */
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.login-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.login-header h2 {
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.login-header p {
+  color: #7f8c8d;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Estilos del formulario */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Grupo de cada campo del formulario */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Etiquetas de los campos */
+.form-group label {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Campos de entrada del formulario */
+.form-input {
+  padding: 1.2rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #fafbfc;
+  color: #000000; /* Texto negro */
+}
+
+/* Estados de los campos */
+.form-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+  color: #000000; /* Texto negro al hacer focus */
+}
+
+.form-input:disabled {
+  background: #f8f9fa;
+  color: #000000; /* Texto negro cuando está deshabilitado */
+  cursor: not-allowed;
+}
+
+.form-input::placeholder {
+  color: #666666; /* Color más oscuro para el placeholder */
+  font-style: italic;
+}
+
+/* Mensajes de error y éxito */
+.error-message {
+  background: linear-gradient(135deg, #fee, #fdd);
+  color: #e74c3c;
+  padding: 1rem;
+  border-radius: 10px;
+  border-left: 4px solid #e74c3c;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+.success-message {
+  background: linear-gradient(135deg, #efe, #dfd);
+  color: #27ae60;
+  padding: 1rem;
+  border-radius: 10px;
+  border-left: 4px solid #27ae60;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+/* Animación para los mensajes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Botón principal del formulario */
+.login-button {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 1.2rem 2rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.login-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6fd8, #6a4190);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.login-button:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.login-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Pie del formulario con enlace al registro */
+.login-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #ecf0f1;
+}
+
+.login-footer p {
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.register-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Sección de demostración */
+.demo-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #ecf0f1;
+  text-align: center;
+}
+
+.demo-section h3 {
+  color: #2c3e50;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.demo-users {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.demo-user {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #5a6c7d;
+  border-left: 3px solid #667eea;
+  text-align: left;
+}
+
+.demo-user strong {
+  color: #2c3e50;
+}
+
+/* Responsividad para dispositivos móviles */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+    min-height: 70vh;
+  }
+
+  .login-card {
+    padding: 2rem;
+    margin: 1rem 0;
+    border-radius: 16px;
+  }
+
+  .login-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .login-icon {
+    font-size: 2.5rem;
+  }
+
+  .form-input {
+    padding: 1rem;
+  }
+
+  .login-button {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .demo-users {
+    gap: 0.8rem;
+  }
+
+  .demo-user {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+
+  .login-header {
+    margin-bottom: 2rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .login-header p {
+    font-size: 0.9rem;
+  }
+
+  .login-icon {
+    font-size: 2rem;
+  }
+}

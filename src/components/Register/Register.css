@@ -1,0 +1,227 @@
+/* Contenedor principal del formulario de registro */
+.register-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* Tarjeta que contiene el formulario */
+.register-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Encabezado del formulario */
+.register-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.register-header h2 {
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.register-header p {
+  color: #7f8c8d;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Estilos del formulario */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Fila para campos lado a lado (nombre/apellido, contraseñas) */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Grupo de cada campo del formulario */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Etiquetas de los campos */
+.form-group label {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Campos de entrada del formulario */
+.form-input {
+  padding: 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #fafbfc;
+  color: #000000; /* Texto negro */
+}
+
+/* Estados de los campos */
+.form-input:focus {
+  outline: none;
+  border-color: #3498db;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  color: #000000; /* Texto negro al hacer focus */
+}
+
+.form-input:disabled {
+  background: #f8f9fa;
+  color: #000000; /* Texto negro cuando está deshabilitado */
+  cursor: not-allowed;
+}
+
+.form-input::placeholder {
+  color: #666666; /* Color más oscuro para el placeholder */
+  font-style: italic;
+}
+
+/* Mensajes de error y éxito */
+.error-message {
+  background: #fee;
+  color: #e74c3c;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.success-message {
+  background: #efe;
+  color: #27ae60;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #27ae60;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Botón principal del formulario */
+.register-button {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 1.2rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.register-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2980b9, #1f639a);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+.register-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.register-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Pie del formulario con enlace al login */
+.register-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #ecf0f1;
+}
+
+.register-footer p {
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.login-link {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Responsividad para dispositivos móviles */
+@media (max-width: 768px) {
+  .register-container {
+    padding: 1rem;
+    min-height: 70vh;
+  }
+
+  .register-card {
+    padding: 2rem;
+    margin: 1rem 0;
+  }
+
+  .register-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-input {
+    padding: 0.9rem;
+  }
+
+  .register-button {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 1.5rem;
+  }
+
+  .register-header {
+    margin-bottom: 2rem;
+  }
+
+  .register-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .register-header p {
+    font-size: 0.9rem;
+  }
+}

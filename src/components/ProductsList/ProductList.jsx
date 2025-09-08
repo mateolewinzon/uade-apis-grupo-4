@@ -10,7 +10,7 @@ export default function ProductList() {
 
     useEffect(() => {
 
-        let url = 'http://localhost:3000/productos';
+        let url = 'http://localhost:3001/productos';
        
         fetch(url)
         .then(response => response.json())
