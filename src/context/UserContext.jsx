@@ -24,7 +24,7 @@ export const UserProvider = ({ children }) => {
     const register = async (userData) => {
         try {
             // Obtenemos los usuarios existentes de la base de datos
-            const response = await fetch('http://localhost:3001/usuarios');
+            const response = await fetch('http://localhost:3000/usuarios');
             const users = await response.json();
 
             // Verificamos si ya existe un usuario con el mismo email
@@ -48,7 +48,7 @@ export const UserProvider = ({ children }) => {
             };
 
             // Guardamos el nuevo usuario en la base de datos
-            const createResponse = await fetch('http://localhost:3001/usuarios', {
+            const createResponse = await fetch('http://localhost:3000/usuarios', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export const UserProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             // Obtenemos todos los usuarios de la base de datos
-            const response = await fetch('http://localhost:3001/usuarios');
+            const response = await fetch('http://localhost:3000/usuarios');
             const users = await response.json();
 
             // Buscamos un usuario que coincida con el email y contraseña proporcionados
