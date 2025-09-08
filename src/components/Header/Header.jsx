@@ -9,7 +9,6 @@ export const Header = () => {
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
   const { cart, toggleCart } = useCart();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false); // Estado para dropdown de usuario
-  const { cart } = useCart();
   const { user, logout, isAuthenticated } = useUser(); // Obtenemos datos del usuario del contexto
   const navigate = useNavigate();
   const userMenuRef = useRef(null); // Referencia para el menú de usuario
