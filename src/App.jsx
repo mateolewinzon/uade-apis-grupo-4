@@ -10,6 +10,9 @@ import { DetailProduct } from "./components/DetailProduct/DetailProduct";
 import { Cart } from "./components/Checkout/Cart";
 import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
+import { DashboardSeller } from "./components/DashboardSeller/DashboardSeller";
+import { FormProduct } from "./components/FormProduct/FormProduct";
+import CartPreview from "./components/Checkout/CartPreview";
 import { VenderPage } from "./components/VenderPage";
 
 // Configuración de rutas
@@ -102,6 +105,7 @@ function App() {
     <UserProvider>
       <CartProvider>
         <Router>
+          <CartPreview />
           <Header />
           <Container>
             <Routes>

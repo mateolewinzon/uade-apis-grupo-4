@@ -7,6 +7,7 @@ import { ShoppingCart, User, LogOut } from 'lucide-react'; // Importamos iconos 
 
 export const Header = () => {
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
+  const { cart, toggleCart } = useCart();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false); // Estado para dropdown de usuario
   const { cart } = useCart();
   const { user, logout, isAuthenticated } = useUser(); // Obtenemos datos del usuario del contexto
@@ -104,12 +105,12 @@ export const Header = () => {
 
         {/* Header Actions */}
         <div className="header-actions">
-          <Link to="/carrito" className="cart" onClick={handleLinkClick}>
+          <button className="cart" onClick={toggleCart}>
             <span className="cart-icon">
               <ShoppingCart />
             </span>
             <span className="cart-text">Carrito ({cart.length})</span>
-          </Link>
+          </button>
           
           {/* Sección de usuario - Mostramos diferentes contenidos según si está logueado o no */}
           {isAuthenticated() ? (
