@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductList from "./components/ProductsList/ProductList";
 import Container from "./components/Container";
 import { CartProvider } from "./context/CartContext";
+import { UserProvider } from "./context/UserContext"; // Importamos el UserProvider
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { DetailProduct } from "./components/DetailProduct/DetailProduct";
@@ -96,23 +97,27 @@ const routes = [
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <Header />
-        <Container>
-          <Routes>
-            {routes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Routes>
-        </Container>
-        <Footer />
-      </Router>
-    </CartProvider>
+    // Envolvemos toda la aplicación con UserProvider y CartProvider
+    // Esto permite que cualquier componente acceda al estado del usuario y del carrito
+    <UserProvider>
+      <CartProvider>
+        <Router>
+          <Header />
+          <Container>
+            <Routes>
+              {routes.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+            </Routes>
+          </Container>
+          <Footer />
+        </Router>
+      </CartProvider>
+    </UserProvider>
   );
 }
 

@@ -1,6 +1,22 @@
 {
   "productos": [
     {
+      "id": "1",
+      "name": "Mate Imperial Calabaza Premium",
+      "description": "Mate de calabaza premium con detalles en plata. Perfecto para los amantes del mate tradicional que buscan calidad y elegancia en cada cebada.",
+      "category": "Mates",
+      "price": "$12.500",
+      "originalPrice": "$15.000",
+      "image": "/premium-calabaza-mate-gourd-with-silver-details.jpg",
+      "badge": "Más Vendido",
+      "rating": 4.8,
+      "reviews": 124,
+      "seller": {
+        "id": 1,
+        "username": "JP Mates"
+      }
+    },
+    {
       "id": "2",
       "name": "Bombilla Alpaca Cincelada",
       "description": "Bombilla de alpaca finamente cincelada a mano. Diseño artesanal único que combina funcionalidad y belleza para una experiencia de mate excepcional.",
@@ -33,12 +49,20 @@
       }
     },
     {
-      "id": "0d33",
-      "name": "mate nuevo",
-      "description": "test",
-      "category": "mate",
-      "price": "$5000",
-      "image": "nada"
+      "id": "4",
+      "name": "Set Completo Principiante",
+      "description": "Kit completo perfecto para comenzar en el mundo del mate. Incluye mate, bombilla, yerbera y manual de instrucciones. Todo lo necesario para disfrutar del mate desde el primer día.",
+      "category": "Kits",
+      "price": "$25.900",
+      "originalPrice": "$32.000",
+      "image": "/complete-mate-starter-set-with-gourd-bombilla-and-.jpg",
+      "badge": "Kit Completo",
+      "rating": 4.6,
+      "reviews": 203,
+      "seller": {
+        "id": 1,
+        "username": "JP Mates"
+      }
     }
   ],
   "usuarios": [
@@ -48,6 +72,7 @@
       "apellido": "Pérez",
       "username": "JP Mates",
       "email": "juan.perez@email.com",
+      "password": "123456",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=juan"
     },
     {
@@ -56,6 +81,7 @@
       "apellido": "García",
       "username": "MG Mates",
       "email": "maria.garcia@email.com",
+      "password": "123456",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=maria"
     },
     {
@@ -64,6 +90,7 @@
       "apellido": "Rodríguez",
       "username": "CR Mates",
       "email": "carlos.rodriguez@email.com",
+      "password": "123456",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=carlos"
     }
   ]
