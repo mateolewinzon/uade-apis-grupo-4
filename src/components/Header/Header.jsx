@@ -7,7 +7,7 @@ import { ShoppingCart } from 'lucide-react';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
-  const { cart } = useCart();
+  const { cart, toggleCart } = useCart();
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -75,12 +75,12 @@ export const Header = () => {
 
         {/* Header Actions */}
         <div className="header-actions">
-          <Link to="/carrito" className="cart" onClick={handleLinkClick}>
+          <button className="cart" onClick={toggleCart}>
             <span className="cart-icon">
               <ShoppingCart />
             </span>
             <span className="cart-text">Carrito ({cart.length})</span>
-          </Link>
+          </button>
           
           {/* Hamburger Menu Button */}
           <button 

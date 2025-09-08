@@ -1,0 +1,196 @@
+import React, { useState, useEffect } from 'react';
+import { useCart } from '../../context/CartContext';
+import { Link } from 'react-router-dom';
+import './CartPreview.css';
+
+const CartPreview = () => {
+  const { cart, removeFromCart, addToCart } = useCart();
+  const [postalCode, setPostalCode] = useState('');
+  const [shippingCost, setShippingCost] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleCheckout = () => {
+    alert('¡Gracias por tu compra!');
+  };
+
+  const calculateInstallments = (total) => {
+    const installmentAmount = (total / 6).toLocaleString('es-AR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    return `O hasta 6 cuotas de $${installmentAmount}`;
+  };
+
+  const calculateShipping = () => {
+    if (postalCode.length === 4) {
+      const mockCost = Math.floor(Math.random() * 5000) + 1000;
+      setShippingCost(mockCost);
+    }
+  };
+
+  const formatPrice = (price) => {
+    if (!price) return 0;
+    const numericPrice = price.toString().replace(/[$\s]/g, '');
+    return parseFloat(numericPrice) || 0;
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const cartContainer = document.querySelector('.cart-preview-container');
+      const toggleButton = document.querySelector('.cart-preview-toggle');
+      if (isOpen && cartContainer && !cartContainer.contains(event.target) && !toggleButton.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
+  const groupedCart = cart.reduce((acc, product) => {
+    const existingProduct = acc.find(item => item.id === product.id);
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+      existingProduct.totalPrice = formatPrice(product.price) * existingProduct.quantity;
+    } else {
+      acc.push({
+        ...product,
+        quantity: 1,
+        totalPrice: formatPrice(product.price)
+      });
+    }
+    return acc;
+  }, []);
+
+  const total = groupedCart.reduce((acc, product) => acc + product.totalPrice, 0);
+
+  const renderCartItems = () => {
+    return groupedCart.map(product => (
+      <div key={product.id} className="cart-preview-item">
+        <img 
+          src={product.image || '/placeholder.jpg'} 
+          alt={product.name} 
+          className="product-image"
+        />
+        <div className="product-details">
+          <span className="product-name">{product.name}</span>
+          <span className="unit-price">Precio unitario: ${product.price}</span>
+        </div>
+        <div className="quantity-controls">
+          <button 
+            className="quantity-button"
+            onClick={() => removeFromCart(product)}
+            disabled={product.quantity <= 1}
+          >
+            -
+          </button>
+          <span className="quantity-display">{product.quantity}</span>
+          <button 
+            className="quantity-button"
+            onClick={() => {
+              const productToAdd = { ...product };
+              delete productToAdd.quantity;
+              delete productToAdd.totalPrice;
+              addToCart(productToAdd);
+            }}
+          >
+            +
+          </button>
+        </div>
+        <span className="price-info">
+          ${formatPrice(product.totalPrice).toLocaleString('es-AR')}
+        </span>
+        <button 
+          className="cart-preview-remove"
+          onClick={() => {
+            for (let i = 0; i < product.quantity; i++) {
+              removeFromCart(product);
+            }
+          }}
+        >
+          ×
+        </button>
+      </div>
+    ));
+  };
+
+  return (
+    <div>
+      <button 
+        className="cart-preview-toggle" 
+        onClick={() => setIsOpen(!isOpen)}
+        title="Carrito"
+      >
+        🛒
+      </button>
+      <div className={`cart-preview-container ${isOpen ? 'open' : ''}`}>
+        <button 
+          className="cart-preview-close" 
+          onClick={() => setIsOpen(false)}
+        >
+          ×
+        </button>
+        <div className="cart-section">
+          <h2 className="cart-preview-title">Carrito de compras</h2>
+          {cart.length === 0 ? (
+            <p>El carrito está vacío.</p>
+          ) : (
+            <div>
+              <div className="cart-preview-list">
+                {renderCartItems()}
+              </div>
+
+              <div className="shipping-section">
+                <h3>Calcular envío</h3>
+                <div>
+                  <input
+                    type="text"
+                    className="postal-code-input"
+                    placeholder="Código postal"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    maxLength="4"
+                  />
+                  <button 
+                    className="calculate-shipping"
+                    onClick={calculateShipping}
+                  >
+                    Calcular
+                  </button>
+                </div>
+              </div>
+
+              <div className="summary-section">
+                <div className="summary-row">
+                  <span>Subtotal:</span>
+                  <span>${total.toLocaleString('es-AR')}</span>
+                </div>
+                {shippingCost > 0 && (
+                  <div className="summary-row">
+                    <span>Envío:</span>
+                    <span>${shippingCost.toLocaleString('es-AR')}</span>
+                  </div>
+                )}
+                <div className="summary-row">
+                  <strong>Total:</strong>
+                  <strong>${(total + shippingCost).toLocaleString('es-AR')}</strong>
+                </div>
+                <div className="installments-info">
+                  {calculateInstallments(total + shippingCost)}
+                </div>
+                <button className="checkout-button" onClick={handleCheckout}>
+                  Iniciar compra
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+        <Link to="/" className="continue-shopping">
+          Ver más productos
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default CartPreview;

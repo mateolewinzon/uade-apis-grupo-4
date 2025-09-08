@@ -11,6 +11,7 @@ import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
 import { DashboardSeller } from "./components/DashboardSeller/DashboardSeller";
 import { FormProduct } from "./components/FormProduct/FormProduct";
+import CartPreview from "./components/Checkout/CartPreview";
 
 // Configuración de rutas
 const routes = [
@@ -109,6 +110,7 @@ function App() {
   return (
     <CartProvider>
       <Router>
+        <CartPreview />
         <Header />
         <Container>
           <Routes>
