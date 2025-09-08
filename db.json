@@ -4,64 +4,125 @@
         "id": 1,
         "name": "Mate Imperial Calabaza Premium",
         "description": "Mate de calabaza premium con detalles en plata. Perfecto para los amantes del mate tradicional que buscan calidad y elegancia en cada cebada.",
+        "detailedDescription": "Este mate imperial de calabaza premium es una obra de arte artesanal que combina la tradición argentina con un diseño elegante y sofisticado. Fabricado con calabaza seleccionada y curada especialmente, cuenta con detalles en plata 925 que realzan su belleza natural. Incluye bombilla de alpaca y estuche de regalo. Ideal para ocasiones especiales o como regalo único.",
         "category": "Mates",
         "price": "$12.500",
         "originalPrice": "$15.000",
         "image": "/premium-calabaza-mate-gourd-with-silver-details.jpg",
+        "gallery": [
+          "/premium-calabaza-mate-gourd-with-silver-details.jpg",
+          "/traditional-argentine-mate-gourd-with-bombilla-in-.jpg",
+          "/traditional-imperial-mate-gourd.jpg"
+        ],
         "badge": "Más Vendido",
         "rating": 4.8,
         "reviews": 124,
+        "stock": 15,
+        "shipping": {
+          "estimatedDays": "3-5 días hábiles",
+          "freeShipping": true,
+          "methods": ["Envío estándar", "Envío express"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
         "seller": {
           "id": 1,
-          "username": "JP Mates"
+          "username": "JP Mates",
+          "reputation": 4.9,
+          "totalSales": 1250,
+          "joinDate": "2020-03-15"
         }
       },
       {
         "id": 2,
         "name": "Bombilla Alpaca Cincelada",
         "description": "Bombilla de alpaca finamente cincelada a mano. Diseño artesanal único que combina funcionalidad y belleza para una experiencia de mate excepcional.",
+        "detailedDescription": "Bombilla de alpaca 925 cincelada completamente a mano por artesanos especializados. Cada pieza es única y cuenta con un diseño tradicional que ha sido perfeccionado durante generaciones. La alpaca proporciona un sabor puro al mate y es resistente a la corrosión. Incluye limpiador especial y estuche protector.",
         "category": "Bombillas",
         "price": "$8.900",
         "originalPrice": null,
         "image": "/engraved-alpaca-bombilla-mate-straw.jpg",
+        "gallery": [
+          "/engraved-alpaca-bombilla-mate-straw.jpg",
+          "/premium-mate-bombilla-silver-alpaca.jpg"
+        ],
         "badge": "Premium",
         "rating": 4.9,
         "reviews": 89,
+        "stock": 8,
+        "shipping": {
+          "estimatedDays": "2-4 días hábiles",
+          "freeShipping": false,
+          "methods": ["Envío estándar", "Envío express"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
         "seller": {
           "id": 2,
-          "username": "MG Mates"
+          "username": "MG Mates",
+          "reputation": 4.8,
+          "totalSales": 890,
+          "joinDate": "2021-01-20"
         }
       },
       {
         "id": 3,
         "name": "Mate Camionero Forrado",
         "description": "Mate camionero con forro de cuero resistente. Ideal para viajes largos y uso intensivo. Mantiene la temperatura perfecta por más tiempo.",
+        "detailedDescription": "Mate camionero tradicional con forro de cuero genuino de primera calidad. Diseñado para resistir el uso intensivo y los viajes largos. El forro de cuero mantiene la temperatura del mate por más tiempo y protege la calabaza. Incluye bombilla de acero inoxidable y correa de transporte. Perfecto para trabajadores de ruta y amantes del mate tradicional.",
         "category": "Mates",
         "price": "$18.500",
         "originalPrice": "$22.000",
         "image": "/leather-wrapped-camionero-mate-gourd.jpg",
+        "gallery": [
+          "/leather-wrapped-camionero-mate-gourd.jpg",
+          "/camionero-mate-gourd-with-metal-details.jpg"
+        ],
         "badge": "Oferta",
         "rating": 4.7,
         "reviews": 156,
+        "stock": 12,
+        "shipping": {
+          "estimatedDays": "4-6 días hábiles",
+          "freeShipping": true,
+          "methods": ["Envío estándar", "Envío express"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
         "seller": {
           "id": 3,
-          "username": "CR Mates"
+          "username": "CR Mates",
+          "reputation": 4.7,
+          "totalSales": 2100,
+          "joinDate": "2019-08-10"
         }
       },
       {
         "id": 4,
         "name": "Set Completo Principiante",
         "description": "Kit completo perfecto para comenzar en el mundo del mate. Incluye mate, bombilla, yerbera y manual de instrucciones. Todo lo necesario para disfrutar del mate desde el primer día.",
+        "detailedDescription": "Kit completo ideal para principiantes que quieren adentrarse en el mundo del mate. Incluye mate de calabaza curada, bombilla de acero inoxidable, yerbera de acero inoxidable, termo de 1 litro, 500g de yerba mate premium y manual de instrucciones detallado. Todo empacado en una caja de regalo elegante. Perfecto para regalar o para comenzar tu propia tradición mate.",
         "category": "Kits",
         "price": "$25.900",
         "originalPrice": "$32.000",
         "image": "/complete-mate-starter-set-with-gourd-bombilla-and-.jpg",
+        "gallery": [
+          "/complete-mate-starter-set-with-gourd-bombilla-and-.jpg",
+          "/mate-accessories-thermos-yerbera.jpg"
+        ],
         "badge": "Kit Completo",
         "rating": 4.6,
         "reviews": 203,
+        "stock": 25,
+        "shipping": {
+          "estimatedDays": "3-5 días hábiles",
+          "freeShipping": true,
+          "methods": ["Envío estándar", "Envío express"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
         "seller": {
           "id": 1,
-          "username": "JP Mates"
+          "username": "JP Mates",
+          "reputation": 4.9,
+          "totalSales": 1250,
+          "joinDate": "2020-03-15"
         }
       }
     ],
@@ -89,6 +150,88 @@
         "username": "CR Mates",
         "email": "carlos.rodriguez@email.com",
         "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=carlos"
+      }
+    ],
+    "reseñas": [
+      {
+        "id": 1,
+        "productId": 1,
+        "userId": 2,
+        "userName": "María García",
+        "rating": 5,
+        "comment": "Excelente mate, la calidad es increíble. Los detalles en plata son hermosos y el sabor del mate es perfecto. Lo recomiendo totalmente.",
+        "date": "2024-01-15",
+        "verified": true
+      },
+      {
+        "id": 2,
+        "productId": 1,
+        "userId": 3,
+        "userName": "Carlos Rodríguez",
+        "rating": 4,
+        "comment": "Muy buen mate, llegó en perfectas condiciones. La calabaza está bien curada y los detalles en plata son de calidad. Solo le faltó un poco más de información sobre el cuidado.",
+        "date": "2024-01-10",
+        "verified": true
+      },
+      {
+        "id": 3,
+        "productId": 1,
+        "userId": 1,
+        "userName": "Juan Pérez",
+        "rating": 5,
+        "comment": "Increíble calidad, superó mis expectativas. El envío fue rápido y el empaque muy cuidado. Definitivamente volveré a comprar.",
+        "date": "2024-01-08",
+        "verified": true
+      },
+      {
+        "id": 4,
+        "productId": 2,
+        "userId": 1,
+        "userName": "Juan Pérez",
+        "rating": 5,
+        "comment": "La bombilla es una obra de arte. El cincelado es perfecto y el sabor del mate es puro. Muy recomendada para los amantes del mate tradicional.",
+        "date": "2024-01-12",
+        "verified": true
+      },
+      {
+        "id": 5,
+        "productId": 2,
+        "userId": 3,
+        "userName": "Carlos Rodríguez",
+        "rating": 4,
+        "comment": "Bombilla de excelente calidad, el diseño es hermoso. Solo me hubiera gustado que viniera con más información sobre el mantenimiento.",
+        "date": "2024-01-05",
+        "verified": true
+      },
+      {
+        "id": 6,
+        "productId": 3,
+        "userId": 2,
+        "userName": "María García",
+        "rating": 5,
+        "comment": "Perfecto para viajes largos. El forro de cuero es de excelente calidad y mantiene la temperatura por mucho tiempo. Muy resistente.",
+        "date": "2024-01-18",
+        "verified": true
+      },
+      {
+        "id": 7,
+        "productId": 4,
+        "userId": 2,
+        "userName": "María García",
+        "rating": 5,
+        "comment": "Kit perfecto para principiantes. Todo lo que necesitas para empezar con el mate. El manual es muy claro y completo. Excelente regalo.",
+        "date": "2024-01-20",
+        "verified": true
+      },
+      {
+        "id": 8,
+        "productId": 4,
+        "userId": 3,
+        "userName": "Carlos Rodríguez",
+        "rating": 4,
+        "comment": "Muy completo el kit, todo de buena calidad. La yerba incluida es excelente. Solo le faltó un poco más de yerba para empezar.",
+        "date": "2024-01-14",
+        "verified": true
       }
     ]
 }

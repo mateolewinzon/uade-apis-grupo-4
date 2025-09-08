@@ -103,6 +103,12 @@
   color: #111827;
   margin: 0 0 1rem 0;
   line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.product-name:hover {
+  color: var(--primary);
 }
 
 .product-pricing {
@@ -112,14 +118,14 @@
   margin-bottom: 1rem;
 }
 
-.current-price {
-  font-size: 1.3rem;
+.product-card .current-price {
+  font-size: 1.6rem !important;
   font-weight: bold;
   color: var(--primary);
 }
 
-.original-price {
-  font-size: 1rem;
+.original-price-card {
+  font-size: 1.3rem;
   color: #6b7280;
   text-decoration: line-through;
 }
