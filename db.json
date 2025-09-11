@@ -124,6 +124,156 @@
           "totalSales": 1250,
           "joinDate": "2020-03-15"
         }
+      },
+      {
+        "id": 5,
+        "name": "Yerba Mate Amanda Tradicional 1kg",
+        "description": "Yerba mate Amanda tradicional molida gruesa. Perfecta para principiantes con un sabor suave y equilibrado. La elección clásica para disfrutar del mate tradicional argentino.",
+        "detailedDescription": "Yerba mate Amanda es una de las marcas más reconocidas y queridas de Argentina. Esta presentación tradicional de 1kg está molida de forma gruesa, lo que permite un mate de sabor suave y duradero. Ideal para quienes se inician en el mate o prefieren sabores menos intensos. Elaborada con hojas cuidadosamente seleccionadas y procesada con métodos tradicionales que conservan todas las propiedades nutritivas del mate.",
+        "category": "Yerba",
+        "price": "$3.500",
+        "originalPrice": null,
+        "image": "/yerba-mate-amanda-1kg--335x335.jpg",
+        "gallery": [
+          "/yerba-mate-amanda-1kg--335x335.jpg"
+        ],
+        "badge": "Tradicional",
+        "rating": 4.5,
+        "reviews": 567,
+        "stock": 120,
+        "shipping": {
+          "estimatedDays": "2-3 días hábiles",
+          "freeShipping": false,
+          "methods": ["Envío estándar"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
+        "seller": {
+          "id": 2,
+          "username": "MG Mates",
+          "reputation": 4.7,
+          "totalSales": 890,
+          "joinDate": "2021-01-20"
+        }
+      },
+      {
+        "id": 6,
+        "name": "Yerba Mate La Merced Premium Especial",
+        "description": "Yerba mate La Merced premium con palo molida especial. Sabor intenso y prolongado para los verdaderos amantes del mate. Blend exclusivo de hojas seleccionadas.",
+        "detailedDescription": "La Merced Premium Especial es una yerba mate de calidad superior, elaborada con un blend exclusivo de hojas cuidadosamente seleccionadas. Su molienda especial y el equilibrio perfecto entre hoja, palo y polvo garantizan un mate de sabor intenso y prolongado. Ideal para materos experimentados que buscan una experiencia de mate excepcional. Envase de 500g con cierre hermético.",
+        "category": "Yerba",
+        "price": "$2.890",
+        "originalPrice": "$3.200",
+        "image": "/yerba_mate_merced.jpg",
+        "gallery": [
+          "/yerba_mate_merced.jpg"
+        ],
+        "badge": "Premium",
+        "rating": 4.8,
+        "reviews": 324,
+        "stock": 85,
+        "shipping": {
+          "estimatedDays": "2-3 días hábiles",
+          "freeShipping": false,
+          "methods": ["Envío estándar", "Envío express"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
+        "seller": {
+          "id": 3,
+          "username": "CR Mates",
+          "reputation": 4.8,
+          "totalSales": 654,
+          "joinDate": "2020-11-10"
+        }
+      },
+      {
+        "id": 7,
+        "name": "Termo Stanley Classic 1L Verde Mate",
+        "description": "Termo Stanley clásico de 1 litro especial para mate. Mantiene la temperatura del agua por 24 horas. Resistente a golpes y perfecto para compartir mate en cualquier lugar.",
+        "detailedDescription": "El termo Stanley Classic de 1 litro en color verde mate es el compañero perfecto para los amantes del mate. Su construcción de acero inoxidable de doble pared mantiene el agua caliente por hasta 24 horas y fría por 48 horas. Cuenta con tapa rosca hermética y pico cebador que facilita el vertido preciso del agua. Resistente a golpes, ideal para camping, trabajo o uso diario. Incluye garantía de por vida del fabricante.",
+        "category": "Accesorios",
+        "price": "$18.500",
+        "originalPrice": null,
+        "image": "/mate-accessories-thermos-yerbera.jpg",
+        "gallery": [
+          "/mate-accessories-thermos-yerbera.jpg"
+        ],
+        "badge": "Bestseller",
+        "rating": 4.9,
+        "reviews": 892,
+        "stock": 45,
+        "shipping": {
+          "estimatedDays": "3-5 días hábiles",
+          "freeShipping": true,
+          "methods": ["Envío estándar", "Envío express"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
+        "seller": {
+          "id": 1,
+          "username": "JP Mates",
+          "reputation": 4.9,
+          "totalSales": 1250,
+          "joinDate": "2020-03-15"
+        }
+      },
+      {
+        "id": 8,
+        "name": "Yerbera de Cuero Artesanal Premium",
+        "description": "Yerbera de cuero genuino hecha a mano por artesanos argentinos. Capacidad para 500g de yerba. Cierre magnético y forro interior impermeable para conservar la frescura.",
+        "detailedDescription": "Esta yerbera artesanal está confeccionada en cuero vacuno genuino por talabarteros especializados en productos para mate. Su diseño tradicional argentino incluye grabados típicos y costuras reforzadas. El forro interior impermeable mantiene la yerba fresca y seca, mientras que el cierre magnético asegura un sellado perfecto. Capacidad para 500g de yerba mate. Cada pieza es única y viene con certificado de autenticidad artesanal.",
+        "category": "Accesorios",
+        "price": "$7.200",
+        "originalPrice": "$8.500",
+        "image": "/yerbera.jpg",
+        "gallery": [
+          "/yerbera.jpg"
+        ],
+        "badge": "Artesanal",
+        "rating": 4.7,
+        "reviews": 156,
+        "stock": 28,
+        "shipping": {
+          "estimatedDays": "5-7 días hábiles",
+          "freeShipping": true,
+          "methods": ["Envío estándar"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
+        "seller": {
+          "id": 4,
+          "username": "Artesanos del Mate",
+          "reputation": 4.6,
+          "totalSales": 342,
+          "joinDate": "2022-05-15"
+        }
+      },
+      {
+        "id": 9,
+        "name": "Azucarera para Mate de Acero Inoxidable",
+        "description": "Azucarera pequeña de acero inoxidable con tapa y cucharita incluida. Perfecta para endulzar tu mate. Diseño compacto y elegante que combina con cualquier juego de mate.",
+        "detailedDescription": "Azucarera diseñada específicamente para acompañar la ceremonia del mate. Fabricada en acero inoxidable 304 de alta calidad, resistente a la corrosión y fácil de limpiar. Capacidad de 150g, perfecta para azúcar, stevia o endulzante de tu preferencia. Incluye cucharita del mismo material y tapa hermética que mantiene el azúcar seco. Su tamaño compacto la hace ideal para llevar en el bolso matero.",
+        "category": "Accesorios",
+        "price": "$2.450",
+        "originalPrice": null,
+        "image": "/azucarera.jpg",
+        "gallery": [
+          "/azucarera.jpg"
+        ],
+        "badge": "Práctico",
+        "rating": 4.4,
+        "reviews": 89,
+        "stock": 67,
+        "shipping": {
+          "estimatedDays": "2-4 días hábiles",
+          "freeShipping": false,
+          "methods": ["Envío estándar"]
+        },
+        "paymentMethods": ["Efectivo", "Tarjeta de crédito", "Transferencia bancaria", "Mercado Pago"],
+        "seller": {
+          "id": 2,
+          "username": "MG Mates",
+          "reputation": 4.7,
+          "totalSales": 890,
+          "joinDate": "2021-01-20"
+        }
       }
     ],
     "usuarios": [
@@ -150,6 +300,15 @@
         "username": "CR Mates",
         "email": "carlos.rodriguez@email.com",
         "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=carlos"
+      },
+      {
+        "id": 4,
+        "nombre": "Ana",
+        "apellido": "Martínez",
+        "username": "Artesanos del Mate",
+        "email": "ana.martinez@artesanosdel mate.com",
+        "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=ana",
+        "password": "artesano456"
       }
     ],
     "reseñas": [
