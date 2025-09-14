@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './DashboardSeller.css';
 
 export const DashboardSeller = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
 
         const mockProducts = [
@@ -52,8 +54,8 @@ export const DashboardSeller = () => {
     };
 
     const handleEdit = (productId) => {
-        // Redirigir a la página de edición
-        window.location.href = `/form-product?edit=${productId}`;
+        // useParams, useNavigate
+        navigate(`/form-product/${productId}`);
     };
 
     if (loading) return <div>Cargando...</div>;
