@@ -73,30 +73,30 @@ export const Header = () => {
             onMouseEnter={() => setIsProductsDropdownOpen(true)}
             onMouseLeave={() => setIsProductsDropdownOpen(false)}
           >
-            <span className="nav-link">Productos</span>
+            <Link to="/productos" className="nav-link">Productos</Link>
             {isProductsDropdownOpen && (
               <div className="dropdown-menu">
-                <Link to="/categoria/mates" className="dropdown-item" onClick={handleLinkClick}>
+                <Link to="/productos/mates" className="dropdown-item" onClick={handleLinkClick}>
                   Mates
                 </Link>
-                <Link to="/categoria/bombillas" className="dropdown-item" onClick={handleLinkClick}>
+                <Link to="/productos/bombillas" className="dropdown-item" onClick={handleLinkClick}>
                   Bombillas
                 </Link>
-                <Link to="/categoria/yerba" className="dropdown-item" onClick={handleLinkClick}>
+                <Link to="/productos/yerba" className="dropdown-item" onClick={handleLinkClick}>
                   Yerba
                 </Link>
-                <Link to="/categoria/accesorios" className="dropdown-item" onClick={handleLinkClick}>
+                <Link to="/productos/accesorios" className="dropdown-item" onClick={handleLinkClick}>
                   Accesorios
                 </Link>
-                <Link to="/categoria/kits" className="dropdown-item" onClick={handleLinkClick}>
+                <Link to="/productos/kits" className="dropdown-item" onClick={handleLinkClick}>
                   Kits
                 </Link>
               </div>
             )}
           </div>
-          <NavLink to="/vendedores" className="nav-link" onClick={handleLinkClick}>
+          {/* <NavLink to="/vendedores" className="nav-link" onClick={handleLinkClick}>
             Vendedores
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/vender" className="nav-link" onClick={handleLinkClick}>
             Vender
           </NavLink>

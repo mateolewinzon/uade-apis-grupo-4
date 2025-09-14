@@ -76,11 +76,6 @@ export default function ProductList({ category, showSellers = false }) {
     return (
         <section className="featured-products">
             <div className="featured-container">
-                <div className="featured-header">
-                    <h2 className="featured-title">Productos Destacados</h2>
-                    <p className="featured-subtitle">Los favoritos de nuestros clientes con la mejor calidad</p>
-                </div>
-
                 {/* Buscador de productos */}
                 <div className="search-container">
                     <div className="search-input-wrapper">

@@ -60,29 +60,34 @@ const routes = [
 
   // Categorías
   {
-    path: "/categoria/mates",
+    path: "/productos/mates",
     element: <ProductList category="Mates" />,
     name: "Mates Category",
   },
   {
-    path: "/categoria/bombillas",
+    path: "/productos/bombillas",
     element: <ProductList category="Bombillas" />,
     name: "Bombillas Category",
   },
   {
-    path: "/categoria/yerba",
+    path: "/productos/yerba",
     element: <ProductList category="Yerba" />,
     name: "Yerba Category",
   },
   {
-    path: "/categoria/accesorios",
+    path: "/productos/accesorios",
     element: <ProductList category="Accesorios" />,
     name: "Accesorios Category",
   },
   {
-    path: "/categoria/kits",
+    path: "/productos/kits",
     element: <ProductList category="Kits" />,
     name: "Kits Category",
+  },
+  {
+    path: "/productos",
+    element: <ProductList />,
+    name: "Productos Category",
   },
   {
     path: "/form-product",
