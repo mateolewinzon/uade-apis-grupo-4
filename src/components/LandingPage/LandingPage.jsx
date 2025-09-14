@@ -20,7 +20,7 @@ const LandingPage = () => {
             <h2>¿Listo para comenzar tu aventura con el mate?</h2>
             <p>Únete a nuestra comunidad y descubre la tradición argentina del mate</p>
             <div className="cta-buttons">
-              <a href="/vendedores" className="btn btn-primary">
+              <a href="/productos" className="btn btn-primary">
                 Explorar Productos
               </a>
               <a href="/vender" className="btn btn-secondary">

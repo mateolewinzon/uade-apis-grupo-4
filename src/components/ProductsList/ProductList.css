@@ -25,7 +25,7 @@
   margin: 0;
 }
 
-.products-grid {
+.products-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
