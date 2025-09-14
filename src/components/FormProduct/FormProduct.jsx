@@ -73,9 +73,6 @@ export const FormProduct = ({ product, onSave, onClose }) => {
     <div className="form-product-container">
       <div className="form-header">
         <h2>{isEditing ? "Editar Producto" : "Agregar Producto"}</h2>
-        <button onClick={onClose} className="close-button">
-            <X />
-        </button>
       </div>
       <form onSubmit={handleSubmit} className="form-grid">
         <div className="form-group span-2">
