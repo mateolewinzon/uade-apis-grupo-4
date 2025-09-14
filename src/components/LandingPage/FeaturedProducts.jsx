@@ -73,7 +73,7 @@ const FeaturedProducts = () => {
         </div>
 
         <div className="section-footer">
-          <Link to="/vendedores" className="view-all-btn">
+          <Link to="/productos" className="view-all-btn">
             Ver Todos los Productos
             <span className="btn-arrow">→</span>
           </Link>

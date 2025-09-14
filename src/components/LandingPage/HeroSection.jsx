@@ -15,7 +15,7 @@ const HeroSection = () => {
             para vivir la auténtica experiencia argentina del mate.
           </p>
           <div className="hero-buttons">
-            <Link to="/vendedores" className="btn btn-primary">
+            <Link to="/productos" className="btn btn-primary">
               Explorar Productos
             </Link>
             <Link to="/vender" className="btn btn-secondary">
