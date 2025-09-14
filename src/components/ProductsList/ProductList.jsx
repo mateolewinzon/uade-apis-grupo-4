@@ -72,14 +72,8 @@ export default function ProductList({ category, showSellers = false }) {
     if (error) {
         return <div>Error: {error.message}</div>;
     }
-    if (!loading && productsToShow.length === 0) {
-        return (
-            <div className="no-products">
-                <h2>No se encontraron productos</h2>
-                {category && <p>No hay productos en la categoría "{category}"</p>}
-            </div>
-        );
-    }    return (
+    
+    return (
         <section className="featured-products">
             <div className="featured-container">
                 <div className="featured-header">
@@ -122,9 +116,17 @@ export default function ProductList({ category, showSellers = false }) {
                 </div>
 
                 <div className="products-grid">
-                    {productsToShow.map(product => (
-                        <CardProduct key={product.id} product={product} />
-                    ))}
+                    {productsToShow.length > 0 ? (
+                        productsToShow.map(product => (
+                            <CardProduct key={product.id} product={product} />
+                        ))
+                    ) : (
+                        <div className="no-products">
+                            <h2>No se encontraron productos</h2>
+                            {category && <p>No hay productos en la categoría "{category}"</p>}
+                            {searchTerm && <p>Intenta con otros términos de búsqueda</p>}
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
