@@ -52,11 +52,11 @@ const routes = [
     element: <VenderPage />,
     name: "Vender",
   },
-  {
-    path: "/vendedores",
-    element: <ProductList showSellers={true} />,
-    name: "Sellers",
-  },
+  // {
+  //   path: "/vendedores",
+  //   element: <ProductList showSellers={true} />,
+  //   name: "Sellers",
+  // },
 
   // Categorías
   {

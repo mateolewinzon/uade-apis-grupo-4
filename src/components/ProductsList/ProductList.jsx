@@ -115,7 +115,7 @@ export default function ProductList({ category, showSellers = false }) {
                     )}
                 </div>
 
-                <div className="products-grid">
+                <div className="products-list">
                     {productsToShow.length > 0 ? (
                         productsToShow.map(product => (
                             <CardProduct key={product.id} product={product} />
