@@ -13,13 +13,14 @@ import { Register } from "./components/Register/Register";
 import { FormProduct } from "./components/FormProduct/FormProduct";
 import CartPreview from "./components/Checkout/CartPreview";
 import { VenderPage } from "./components/VenderPage";
+import LandingPage from "./components/LandingPage/LandingPage";
 
 // Configuración de rutas
 const routes = [
   // Rutas principales
   {
     path: "/",
-    element: <ProductList />,
+    element: <LandingPage />,
     name: "Home",
   },
   {
