@@ -54,7 +54,7 @@ export const DashboardSeller = () => {
     };
 
     const handleEdit = (productId) => {
-        // useParams, useNavigate
+
         navigate(`/form-product/${productId}`);
     };
 
