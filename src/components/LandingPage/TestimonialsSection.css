@@ -1,6 +1,6 @@
 .testimonials-section {
   padding: 4rem 0;
-  background: #667eea;
+  background: #C97A3D;
 }
 
 .container {
@@ -19,6 +19,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: white
 }
 
 .section-header p {

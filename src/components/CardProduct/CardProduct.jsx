@@ -51,12 +51,14 @@ export const CardProduct = ({ product }) => {
           {product.originalPrice && <span className="original-price-v2">{product.originalPrice}</span>}
         </div>
 
-        <button 
-          className="add-to-cart-v2" 
-          onClick={() => addToCart(product)}
-        >
-          Agregar al Carrito
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <button 
+            className="add-to-cart-v2" 
+            onClick={() => addToCart(product)}
+          >
+            Agregar al Carrito
+          </button>
+        </div>
       </div>
     </div>
   );

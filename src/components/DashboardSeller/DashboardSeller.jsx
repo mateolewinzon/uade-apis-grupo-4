@@ -6,21 +6,11 @@ export const DashboardSeller = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
-
-        const mockProducts = [
-        {
-            id: 1,
-            name: "Producto de prueba",
-            price: 999,
-            image: "https://via.placeholder.com/150"
-        }
-    ];
-
     useEffect(() => {
-
-        // Usamos la misma URL que ProductList
         fetch('http://localhost:3000/productos')
             .then(response => response.json())
             .then(data => {
@@ -34,7 +24,25 @@ export const DashboardSeller = () => {
             });
     }, []);
 
-    const handleDelete = async (productId) => {  // Agregar async aquí
+    useEffect(() => {
+        let filtered = products;
+        if (searchTerm) {
+            filtered = filtered.filter(product =>
+                product.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+        setFilteredProducts(filtered);
+    }, [products, searchTerm]);
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const clearSearch = () => {
+        setSearchTerm('');
+    };
+
+    const handleDelete = async (productId) => {
         if (window.confirm('¿Seguro que deseas eliminar este producto?')) {
             try {
                 const response = await fetch(`http://localhost:3000/productos/${productId}`, {
@@ -54,7 +62,6 @@ export const DashboardSeller = () => {
     };
 
     const handleEdit = (productId) => {
-        // Redirigir a la página de edición
         navigate(`/form-product?edit=${productId}`);
     };
 
@@ -65,12 +72,44 @@ export const DashboardSeller = () => {
     if (loading) return <div>Cargando...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
+    const productsToShow = searchTerm ? filteredProducts : products;
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
-            <h1>Panel de Vendedor</h1>
-            <button  className="btn-primary" onClick={handleAddProduct}>Agregar Producto</button>
+                <h1>Panel de Vendedor</h1>
+                <button className="btn-primary" onClick={handleAddProduct}>Agregar Producto</button>
             </div>
+
+            <div className="search-container">
+                <div className="search-input-wrapper">
+                    <div className="search-icon">
+                        🔍
+                    </div>
+                    <input
+                        type="text"
+                        className="search-input"
+                        placeholder="Buscar productos por nombre..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+                    {searchTerm && (
+                        <button
+                            className="clear-search-btn"
+                            onClick={clearSearch}
+                            aria-label="Limpiar búsqueda"
+                        >
+                            ✕
+                        </button>
+                    )}
+                </div>
+                {searchTerm && (
+                    <div className="search-results-info">
+                        Mostrando {productsToShow.length} resultado{productsToShow.length !== 1 ? 's' : ''} para "{searchTerm}"
+                    </div>
+                )}
+            </div>
+
             <div className="products-table">
                 <table>
                     <thead>
@@ -82,13 +121,13 @@ export const DashboardSeller = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map(product => (
+                        {productsToShow.map(product => (
                             <tr key={product.id}>
                                 <td>
-                                    <img 
-                                        src={product.image} 
+                                    <img
+                                        src={product.image}
                                         alt={product.name}
-                                        style={{width: '50px', height: '50px'}}
+                                        style={{ width: '50px', height: '50px' }}
                                     />
                                 </td>
                                 <td>{product.name}</td>
@@ -96,10 +135,9 @@ export const DashboardSeller = () => {
                                 <td>
                                     <button className="edit-btn"
                                         onClick={() => handleEdit(product.id)}>
-                                      
                                         Editar
                                     </button>
-                                    <button 
+                                    <button
                                         className="delete-btn"
                                         onClick={() => handleDelete(product.id)}
                                     >
