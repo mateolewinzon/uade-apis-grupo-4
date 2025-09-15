@@ -202,7 +202,7 @@ const CartPreview = () => {
           </>
         )}
       </div>
-      <Link to="/vendedores" className="continue-shopping" onClick={hideCart}>
+      <Link to="/productos" className="continue-shopping" onClick={hideCart}>
         Ver más productos
       </Link>
     </div>
