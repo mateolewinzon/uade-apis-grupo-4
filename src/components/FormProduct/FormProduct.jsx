@@ -117,7 +117,7 @@ export const FormProduct = ({ onSave, onClose }) => {
       alert("Error al guardar el producto. Por favor, intenta nuevamente.");
     }
   };
-
+//formulario en modo edición
   return (
     <div className="form-product-container">
       <div className="form-header">
