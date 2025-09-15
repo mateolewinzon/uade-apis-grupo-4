@@ -1,29 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Star, Handshake, Trophy, Truck, MessageCircle, Leaf } from 'lucide-react';
 import './AboutSection.css';
 
 const AboutSection = () => {
   const features = [
     {
-      icon: '🤝',
+      icon: <Handshake size={44} color="#4A7C2F" />,
       title: 'Conectamos Artesanos',
       description: 'Conectamos artesanos locales con amantes del mate, promoviendo el comercio justo y la tradición argentina.'
     },
     {
-      icon: '🏆',
+      icon: <Trophy size={44} color="#FFD700" />,
       title: 'Calidad Premium',
       description: 'Todos nuestros productos son seleccionados por su calidad excepcional y autenticidad artesanal.'
     },
     {
-      icon: '🚚',
+      icon: <Truck size={44} color="#4A7C2F" />,
       title: 'Envío Seguro',
       description: 'Enviamos a todo el país con embalaje especializado para proteger tus mates y accesorios.'
     },
-    {
-      icon: '💬',
-      title: 'Comunidad Activa',
-      description: 'Únete a una comunidad de amantes del mate que comparten experiencias y consejos.'
-    }
   ];
 
   const stats = [
@@ -39,7 +35,9 @@ const AboutSection = () => {
         <div className="about-content">
           <div className="about-text">
             <div className="section-badge">
-              <span className="badge-icon">🍃</span>
+              <span className="badge-icon">
+                <Leaf size={16} color="#4A7C2F" />
+              </span>
               <span className="badge-text">Sobre Nosotros</span>
             </div>
             
@@ -87,7 +85,7 @@ const AboutSection = () => {
               />
               <div className="image-overlay">
                 <div className="overlay-content">
-                  <span className="overlay-icon">⭐</span>
+                  <Star size={20} color="#FFD700" fill="#FFD700" />
                   <span className="overlay-text">Tradición Auténtica</span>
                 </div>
               </div>
@@ -99,7 +97,7 @@ const AboutSection = () => {
           {features.map((feature, index) => (
             <div key={index} className="feature-card">
               <div className="feature-icon">
-                <span className="icon">{feature.icon}</span>
+                {feature.icon}
               </div>
               <div className="feature-content">
                 <h3 className="feature-title">{feature.title}</h3>

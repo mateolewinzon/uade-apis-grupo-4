@@ -7,6 +7,7 @@ import { ShoppingCart, User, LogOut } from 'lucide-react'; // Importamos iconos 
 
 export const Header = () => {
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Estado para menú móvil
   const { cart, toggleCart } = useCart();
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false); // Estado para dropdown de usuario
   const { user, logout, isAuthenticated } = useUser(); // Obtenemos datos del usuario del contexto
@@ -36,6 +37,11 @@ export const Header = () => {
     setIsProductsDropdownOpen(!isProductsDropdownOpen);
   };
 
+  // Función para manejar el menú móvil
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   // Función para manejar el dropdown del usuario
   const toggleUserDropdown = () => {
     setIsUserDropdownOpen(!isUserDropdownOpen);
@@ -55,6 +61,7 @@ export const Header = () => {
   const handleLinkClick = () => {
     setIsProductsDropdownOpen(false);
     setIsUserDropdownOpen(false); // Cerramos también el dropdown de usuario
+    setIsMobileMenuOpen(false); // Cerramos el menú móvil al hacer click en un enlace
   };
 
   return (
@@ -157,8 +164,83 @@ export const Header = () => {
               </Link>
             </div>
           )}
+
+          {/* Botón hamburguesa para móvil */}
+          <button 
+            className="hamburger-menu"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+          >
+            <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+            <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+            <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+          </button>
         </div>
       </div>
+
+      {/* Navegación móvil */}
+      <nav className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-nav-content">
+          {/* Productos con dropdown en móvil */}
+          <div className="mobile-nav-item">
+            <button 
+              className="mobile-nav-link dropdown-toggle"
+              onClick={toggleProductsDropdown}
+            >
+              Productos
+              <span className={`mobile-arrow ${isProductsDropdownOpen ? 'open' : ''}`}>▼</span>
+            </button>
+            {isProductsDropdownOpen && (
+              <div className="mobile-dropdown">
+                <Link to="/productos/mates" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Mates
+                </Link>
+                <Link to="/productos/bombillas" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Bombillas
+                </Link>
+                <Link to="/productos/yerba" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Yerba
+                </Link>
+                <Link to="/productos/accesorios" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Accesorios
+                </Link>
+                <Link to="/productos/kits" className="mobile-dropdown-item" onClick={handleLinkClick}>
+                  Kits
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <Link to="/vender" className="mobile-nav-link" onClick={handleLinkClick}>
+            Vender
+          </Link>
+
+          {/* Sección de usuario en móvil */}
+          {isAuthenticated() ? (
+            <div className="mobile-user-section">
+              <div className="mobile-user-info">
+                <img src={user.avatar} alt={user.username} className="mobile-user-avatar" />
+                <span className="mobile-user-name">Hola, {user.nombre}</span>
+              </div>
+              <Link to="/dashboard" className="mobile-nav-link" onClick={handleLinkClick}>
+                Mi Dashboard
+              </Link>
+              <button className="mobile-nav-link logout-mobile" onClick={handleLogout}>
+                Cerrar Sesión
+              </button>
+            </div>
+          ) : (
+            <div className="mobile-auth-section">
+              <Link to="/login" className="mobile-auth-link" onClick={handleLinkClick}>
+                Iniciar Sesión
+              </Link>
+              <Link to="/register" className="mobile-auth-link register" onClick={handleLinkClick}>
+                Registrarse
+              </Link>
+            </div>
+          )}
+        </div>
+      </nav>
     </header>
   );
 };

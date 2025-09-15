@@ -7,7 +7,6 @@ import { UserProvider } from "./context/UserContext"; // Importamos el UserProvi
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { DetailProduct } from "./components/DetailProduct/DetailProduct";
-import { Cart } from "./components/Checkout/Cart";
 import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
 import { FormProduct } from "./components/FormProduct/FormProduct";
@@ -27,11 +26,6 @@ const routes = [
     path: "/producto/:id",
     element: <DetailProduct />,
     name: "Product Detail",
-  },
-  {
-    path: "/carrito",
-    element: <Cart />,
-    name: "Shopping Cart",
   },
 
   // Autenticación

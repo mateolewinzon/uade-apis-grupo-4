@@ -193,6 +193,9 @@
 }
 
 .feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1.5rem;
 }
 
@@ -207,6 +210,7 @@
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .feature-description {

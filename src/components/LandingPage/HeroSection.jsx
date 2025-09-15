@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Trophy, Truck, Star } from 'lucide-react';
 import './HeroSection.css';
 
 const HeroSection = () => {
@@ -46,19 +47,25 @@ const HeroSection = () => {
             />
             <div className="floating-card card-1">
               <div className="card-content">
-                <span className="card-icon">🏆</span>
+                <span className="card-icon">
+                  <Trophy size={20} color="#FFD700"/>
+                </span>
                 <span className="card-text">Calidad Premium</span>
               </div>
             </div>
             <div className="floating-card card-2">
               <div className="card-content">
-                <span className="card-icon">🚚</span>
+                <span className="card-icon">
+                  <Truck size={20} color="#4A7C2F" />
+                </span>
                 <span className="card-text">Envío Gratis</span>
               </div>
             </div>
             <div className="floating-card card-3">
               <div className="card-content">
-                <span className="card-icon">⭐</span>
+                <span className="card-icon">
+                  <Star size={20} color="#FFD700" fill="#FFD700" />
+                </span>
                 <span className="card-text">4.9/5 Rating</span>
               </div>
             </div>

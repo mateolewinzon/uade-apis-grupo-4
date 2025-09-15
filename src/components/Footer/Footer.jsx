@@ -1,4 +1,5 @@
 import "./Footer.css"
+import { MapPin, Phone, Mail, Send } from 'lucide-react'
 
 export const Footer = () => {
   return (
@@ -40,15 +41,21 @@ export const Footer = () => {
             <h4 className="footer-title">Contacto</h4>
             <div className="contact-info">
               <div className="contact-item">
-                <span className="contact-icon">📍</span>
+                <span className="contact-icon">
+                  <MapPin size={16} />
+                </span>
                 <span>Buenos Aires, Argentina</span>
               </div>
               <div className="contact-item">
-                <span className="contact-icon">📞</span>
+                <span className="contact-icon">
+                  <Phone size={16} />
+                </span>
                 <span>+54 11 1234-5678</span>
               </div>
               <div className="contact-item">
-                <span className="contact-icon">✉️</span>
+                <span className="contact-icon">
+                  <Mail size={16} />
+                </span>
                 <span>info@matemarket.com.ar</span>
               </div>
             </div>
@@ -56,7 +63,10 @@ export const Footer = () => {
               <h5>Newsletter</h5>
               <div className="newsletter-form">
                 <input type="email" placeholder="Tu email" className="newsletter-input" />
-                <button className="newsletter-btn">Suscribirse</button>
+                <button className="newsletter-btn">
+                  <Send size={16} />
+                  <span>Suscribirse</span>
+                </button>
               </div>
             </div>
           </div>

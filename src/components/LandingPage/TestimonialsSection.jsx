@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { MessageCircle } from 'lucide-react';
 import './TestimonialsSection.css';
 
 const TestimonialsSection = () => {
@@ -72,7 +73,7 @@ const TestimonialsSection = () => {
           <p>Testimonios reales de nuestra comunidad de amantes del mate</p>
           <div className="section-decoration">
             <div className="decoration-line"></div>
-            <div className="decoration-icon">💬</div>
+            <div className="decoration-icon">{<MessageCircle size={20} /> }</div>
             <div className="decoration-line"></div>
           </div>
         </div>
@@ -138,7 +139,7 @@ const TestimonialsSection = () => {
         </div>
 
         <div className="testimonials-grid">
-          {testimonials.slice(0, 3).map((testimonial, index) => (
+          {testimonials.slice(0, 3).map((testimonial) => (
             <div key={testimonial.id} className="testimonial-mini">
               <div className="mini-header">
                 <img 

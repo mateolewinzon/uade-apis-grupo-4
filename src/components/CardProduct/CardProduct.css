@@ -62,18 +62,21 @@
   height: 40px;
   border-radius: 50%;
   border: none;
-  background: var(--secondary);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  color: var(--primary);
 }
 
 .action-btn-v2:hover {
   transform: scale(1.1);
   background: var(--primary);
+  color: white;
 }
 
 .product-content-v2 {

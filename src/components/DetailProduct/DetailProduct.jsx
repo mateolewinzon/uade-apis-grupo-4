@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import {  
+  ShoppingCart, 
+  X, 
+  Check, 
+  AlertTriangle, 
+  Truck, 
+  CheckCircle, 
+  ArrowLeft 
+} from 'lucide-react';
 import "./DetailProduct.css";
 
 export const DetailProduct = () => {
@@ -28,6 +37,7 @@ export const DetailProduct = () => {
         console.log('URL:', `http://localhost:3000/productos/${id}`);
         
         // First, let's test if the server is running
+        let productData = null;
         try {
           const testResponse = await fetch(`http://localhost:3000/productos/${id}`);
           console.log('Test response status:', testResponse.status);
@@ -45,7 +55,7 @@ export const DetailProduct = () => {
             console.error('Product not found. Status:', productResponse.status);
             throw new Error(`Producto no encontrado (Status: ${productResponse.status})`);
           }
-          const productData = await productResponse.json();
+          productData = await productResponse.json();
           console.log('Product data received:', productData);
           setProduct(productData);
         } catch (serverError) {
@@ -64,15 +74,17 @@ export const DetailProduct = () => {
 
         }
 
-        // Fetch related products
-        try {
-          const relatedResponse = await fetch(`http://localhost:3000/productos?category=${productData.category}&_limit=4`);
-          if (relatedResponse.ok) {
-            const relatedData = await relatedResponse.json();
-            setRelatedProducts(relatedData.filter(p => p.id !== parseInt(id)));
+        // Fetch related products (only if we have product data)
+        if (productData && productData.category) {
+          try {
+            const relatedResponse = await fetch(`http://localhost:3000/productos?category=${productData.category}&_limit=4`);
+            if (relatedResponse.ok) {
+              const relatedData = await relatedResponse.json();
+              setRelatedProducts(relatedData.filter(p => p.id !== parseInt(id)));
+            }
+          } catch (relatedError) {
+            console.log('Related products not available, using mock data:', relatedError);
           }
-        } catch (relatedError) {
-          console.log('Related products not available, using mock data:', relatedError);
         }
 
       } catch (error) {
@@ -156,16 +168,21 @@ export const DetailProduct = () => {
       <div className="detail-container">
         {toast.visible && (
           <div className={`toast ${toast.type}`}>
-            <div className="toast-icon">✅</div>
+            <div className="toast-icon">
+              <CheckCircle size={20} color="green" />
+            </div>
             <div className="toast-content">
               <strong>Agregado al carrito</strong>
               <span>{toast.message}</span>
             </div>
-            <button className="toast-close" onClick={() => setToast({ visible: false, message: "", type: "success" })}>✕</button>
+            <button className="toast-close" onClick={() => setToast({ visible: false, message: "", type: "success" })}>
+              <X size={16} />
+            </button>
           </div>
         )}
         <button onClick={handleBackToProducts} className="back-btn">
-          ← Volver a Productos
+          <ArrowLeft size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+          Volver a Productos
         </button>
         
         {/* Main Product Section */}
@@ -203,8 +220,19 @@ export const DetailProduct = () => {
             <div className="product-header">
               <div className="product-rating">
                 <div className="stars">
-                  {"★".repeat(Math.floor(product.rating))}
-                  {"☆".repeat(5 - Math.floor(product.rating))}
+                  {
+                    product.rating && ( 
+                        <>
+                          {"★".repeat(Math.floor(product.rating))}
+                          {"☆".repeat(5 - Math.floor(product.rating))}
+                        </>
+                      ) || (
+                        <>
+                          {"No hay calificaciones aún"}
+                      </>
+                    )
+                  }
+                  
                 </div>
                 <span className="rating-text">{product.rating}/5 ({product.reviews} reseñas)</span>
               </div>
@@ -256,18 +284,37 @@ export const DetailProduct = () => {
                   }
                 }}
               >
-                {product.stock === 0 ? '❌ Sin Stock' : '🛒 AGREGAR AL CARRITO'}
+                {product.stock === 0 ? (
+                  <>
+                    <X size={20} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                    Sin Stock
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart size={20} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                    AGREGAR AL CARRITO
+                  </>
+                )}
               </button>
             </div>
 
             {/* Stock Status */}
             <div className="stock-status">
               {product.stock > 10 ? (
-                <span className="in-stock">✓ En stock ({product.stock} disponibles)</span>
+                <span className="in-stock">
+                  <Check size={16} style={{ marginRight: '4px', color: 'green', verticalAlign: 'middle' }} />
+                  En stock ({product.stock} disponibles)
+                </span>
               ) : product.stock > 0 ? (
-                <span className="low-stock">⚠ Pocas unidades ({product.stock} disponibles)</span>
+                <span className="low-stock">
+                  <AlertTriangle size={16} style={{ marginRight: '4px', color: 'orange', verticalAlign: 'middle' }} />
+                  Pocas unidades ({product.stock} disponibles)
+                </span>
               ) : (
-                <span className="out-of-stock">✗ Sin stock</span>
+                <span className="out-of-stock">
+                  <X size={16} style={{ marginRight: '4px', color: 'red', verticalAlign: 'middle' }} />
+                  Sin stock
+                </span>
               )}
             </div>
 
@@ -276,7 +323,8 @@ export const DetailProduct = () => {
               <div className="shipping-info">
                 <h4>Envío</h4>
                 <p>
-                  {product.shipping.freeShipping ? '🚚 Envío gratis' : '🚚 Envío con costo'} - 
+                  <Truck size={16} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  {product.shipping.freeShipping ? 'Envío gratis' : 'Envío con costo'} - 
                   {product.shipping.estimatedDays}
                 </p>
                 {product.shipping.methods && (
@@ -443,9 +491,19 @@ export const DetailProduct = () => {
                   </h4>
                   <div className="related-price">{relatedProduct.price}</div>
                   <div className="related-rating">
-                    {"★".repeat(Math.floor(relatedProduct.rating))}
-                    {"☆".repeat(5 - Math.floor(relatedProduct.rating))}
-                    <span>({relatedProduct.reviews})</span>
+                    {
+                      relatedProduct.rating && (
+                        <>
+                        {"★".repeat(Math.floor(relatedProduct.rating))}
+                        {"☆".repeat(5 - Math.floor(relatedProduct.rating))}
+                        <span>({relatedProduct.reviews})</span>
+                        </>
+                      ) || (
+                        <>
+                          <p style={{ color: 'gray' }}>No hay calificaciones aún</p>
+                        </>
+                      )
+                    } 
                   </div>
                 </div>
               ))}

@@ -57,18 +57,12 @@ const FeaturedProducts = () => {
         <div className="section-header">
           <h2>Productos Destacados</h2>
           <p>Descubre nuestra selección de los mejores mates y accesorios artesanales</p>
-          <div className="section-decoration">
-            <div className="decoration-line"></div>
-            <div className="decoration-icon">🍃</div>
-            <div className="decoration-line"></div>
-          </div>
         </div>
 
         <div className="products-grid">
           {products.map((product) => (
-            <div key={product.id} className="featured-product-card">
-              <CardProduct product={product} />
-            </div>
+              <CardProduct product={product} key={product.id} />
+
           ))}
         </div>
 

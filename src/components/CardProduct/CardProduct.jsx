@@ -1,5 +1,6 @@
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { Eye } from "lucide-react";
 import "./CardProduct.css";
 
 export const CardProduct = ({ product }) => {
@@ -24,8 +25,9 @@ export const CardProduct = ({ product }) => {
         />
         <div className="product-badge-v2">{product.badge}</div>
         <div className="product-actions-v2">
-          <button className="action-btn-v2">❤️</button>
-          <button className="action-btn-v2" onClick={handleViewProduct}>👁️</button>
+          <button className="action-btn-v2" onClick={handleViewProduct}>
+            <Eye size={18} />
+          </button>
         </div>
       </div>
 
