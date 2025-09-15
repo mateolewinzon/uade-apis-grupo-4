@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./FormProduct.css";
 
 const categories = ["Mates", "Bombillas", "Yerba", "Accesorios", "Kits"];
 
-export const FormProduct = ({ product, onSave, onClose }) => {
+export const FormProduct = ({ onSave, onClose }) => {
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -12,72 +13,109 @@ export const FormProduct = ({ product, onSave, onClose }) => {
     price: "",
     image: "",
   });
-
+  const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
-
-  const isEditing = !!product;
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Get the product ID from URL parameters
+  const searchParams = new URLSearchParams(location.search);
+  const editProductId = searchParams.get('edit');
+  const isEditing = !!editProductId;
 
   useEffect(() => {
     if (isEditing) {
-      setForm(product);
+      // Fetch the product data when editing
+      fetch(`http://localhost:3000/productos/${editProductId}`)
+        .then(response => response.json())
+        .then(productData => {
+          setForm(productData);
+          setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error fetching product:', error);
+          setLoading(false);
+        });
     } else {
       setForm({
         name: "",
         description: "",
-  category: categories[0],
+        category: categories[0],
         price: "",
         image: "",
       });
+      setLoading(false);
     }
-  }, [product, isEditing]);
+  }, [isEditing, editProductId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "price") {
-      const numericValue = value.replace(/[^0-9.]/g, "");
-      setForm({ ...form, [name]: `$${numericValue}` });
+      // Remove any existing $ and only allow numbers and one decimal point
+      const numericValue = value.replace(/^\$/, '').replace(/[^0-9.]/g, '');
+      // Ensure only one decimal point
+      const parts = numericValue.split('.');
+      const cleanValue = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : numericValue;
+      setForm({ ...form, [name]: cleanValue ? `$${cleanValue}` : '' });
     } else {
       setForm({ ...form, [name]: value });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const seller = {
-      id: 1,
-      username: "JP Mates",
-    }; // Hardcoded seller for now
+    
+    try {
+      const seller = {
+        id: 1,
+        username: "JP Mates",
+      }; // Hardcoded seller for now
 
-    const productData = {
-      ...form,
-      price: form.price.startsWith("$") ? form.price : `$${form.price}`,
-    };
+      const productData = {
+        ...(isEditing ? { id: editProductId } : {}), // Use editProductId instead of product.id
+        ...form,
+        price: form.price ? (form.price.startsWith("$") ? form.price : `$${form.price}`) : "",
+        seller
+      };
 
-    const url = isEditing
-      ? `http://localhost:3000/productos/${product.id}`
-      : "http://localhost:3000/productos";
-    const method = isEditing ? "PUT" : "POST";
+      const url = isEditing
+        ? `http://localhost:3000/productos/${editProductId}`
+        : "http://localhost:3000/productos";
+      const method = isEditing ? "PUT" : "POST";
 
-    fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(productData),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        if (typeof onSave === "function") onSave();
-        // Si no es edición, limpiar solo el formulario para permitir agregar otro producto
-        if (!isEditing) {
-          setForm({ name: "", description: "", category: categories[0], price: "", image: "" });
-          setSuccess(true);
-          setTimeout(() => setSuccess(false), 3000);
-        }
-      })
-      .catch((err) => {
-        console.error("Error guardando producto:", err);
+      console.log('Sending request:', {
+        url,
+        method,
+        data: productData
       });
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Success:', result);
+      
+      setSuccess(true);
+      if (typeof onSave === "function") onSave();
+      
+      // Redirect back to seller dashboard after successful edit/create
+      setTimeout(() => {
+        setSuccess(false);
+        navigate('/vender');
+      }, 2000);
+    } catch (err) {
+      console.error("Error guardando producto:", err);
+      alert("Error al guardar el producto. Por favor, intenta nuevamente.");
+    }
   };
 
   return (
@@ -89,7 +127,7 @@ export const FormProduct = ({ product, onSave, onClose }) => {
           className="close-button"
           onClick={() => {
             if (typeof onClose === 'function') onClose();
-            window.location.href = 'http://localhost:5001/vender';
+            navigate('/vender');
           }}
           aria-label="Cerrar"
         >
@@ -98,7 +136,9 @@ export const FormProduct = ({ product, onSave, onClose }) => {
       </div>
       <form onSubmit={handleSubmit}>
         {success && (
-          <div className="success-message">Producto agregado exitosamente!</div>
+          <div className="success-message">
+            {isEditing ? "Los cambios se realizaron correctamente!" : "Producto agregado exitosamente!"}
+          </div>
         )}
         <div className="form-grid">
           <div className="form-group span-2">
