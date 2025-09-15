@@ -13,6 +13,8 @@ export const FormProduct = ({ product, onSave, onClose }) => {
     image: "",
   });
 
+  const [success, setSuccess] = useState(false);
+
   const isEditing = !!product;
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export const FormProduct = ({ product, onSave, onClose }) => {
       setForm({
         name: "",
         description: "",
-        category: categories[0],
+  category: categories[0],
         price: "",
         image: "",
       });
@@ -65,7 +67,16 @@ export const FormProduct = ({ product, onSave, onClose }) => {
     })
       .then((response) => response.json())
       .then(() => {
-        onSave();
+        if (typeof onSave === "function") onSave();
+        // Si no es edición, limpiar solo el formulario para permitir agregar otro producto
+        if (!isEditing) {
+          setForm({ name: "", description: "", category: categories[0], price: "", image: "" });
+          setSuccess(true);
+          setTimeout(() => setSuccess(false), 3000);
+        }
+      })
+      .catch((err) => {
+        console.error("Error guardando producto:", err);
       });
   };
 
@@ -73,8 +84,22 @@ export const FormProduct = ({ product, onSave, onClose }) => {
     <div className="form-product-container">
       <div className="form-header">
         <h2>{isEditing ? "Editar Producto" : "Agregar Producto"}</h2>
+        <button
+          type="button"
+          className="close-button"
+          onClick={() => {
+            if (typeof onClose === 'function') onClose();
+            window.location.href = 'http://localhost:5001/vender';
+          }}
+          aria-label="Cerrar"
+        >
+          <X />
+        </button>
       </div>
       <form onSubmit={handleSubmit}>
+        {success && (
+          <div className="success-message">Producto agregado exitosamente!</div>
+        )}
         <div className="form-grid">
           <div className="form-group span-2">
             <label htmlFor="name" className="form-label">
