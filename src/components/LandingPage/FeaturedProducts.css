@@ -12,6 +12,7 @@
 .section-header {
   text-align: center;
   margin-bottom: 4rem;
+  color: #000000;
 }
 
 .section-header h2 {
@@ -20,9 +21,12 @@
   color: #2c3e50;
   margin-bottom: 1rem;
   position: relative;
+  background-color: #C97A3D;
+  
 }
 
 .section-header h2::after {
+  color: #2c3e50;
   content: '';
   position: absolute;
   bottom: -10px;
@@ -36,9 +40,11 @@
 
 .section-header p {
   font-size: 1.2rem;
-  color: #6c757d;
+  background-color: #C97A3D;
+  color: #C97A3D;
+  font-weight: 700;
   margin-bottom: 2rem;
-  max-width: 600px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -54,7 +60,7 @@
 .decoration-line {
   width: 60px;
   height: 2px;
-  background: #3498db;
+  background: #C97A3D;
   border-radius: 1px;
 }
 
@@ -85,7 +91,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #3498db;
+  background: #C97A3D;
   color: white;
   padding: 1rem 2rem;
   border-radius: 25px;
@@ -95,7 +101,7 @@
 }
 
 .view-all-btn:hover {
-  background: #2980b9;
+  background: #C97A3D;
 }
 
 /* Loading States */

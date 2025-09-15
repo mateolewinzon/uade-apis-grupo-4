@@ -1,5 +1,5 @@
 .about-section {
-  padding: 4rem 0;
+  padding: 5rem 0;
   background: white;
 }
 
@@ -19,6 +19,7 @@
 
 .about-text {
   padding-right: 2rem;
+  color: #2c3e50;
 }
 
 .section-badge {
@@ -94,36 +95,38 @@
 }
 
 .btn {
-  padding: 1rem 2rem;
+  padding: 1.2rem 2.5rem;
   border-radius: 50px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 160px;
   text-align: center;
+  border: 2px solid transparent;
 }
 
 .btn-primary {
-  background: #3498db;
+  background: #C97A3D;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #2980b9;
+  background: #A6652F;
+  border-color: #A6652F;
 }
 
 .btn-outline {
   background: transparent;
-  color: #3498db;
-  border: 2px solid #3498db;
+  color: #C97A3D;
+  border-color: #C97A3D;
 }
 
 .btn-outline:hover {
-  background: #3498db;
+  background: #C97A3D;
   color: white;
 }
 
@@ -186,7 +189,7 @@
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.08);
   border: 1px solid #e9ecef;
-  border-top: 4px solid #3498db;
+  border-top: 4px solid #C97A3D;
 }
 
 .feature-icon {
@@ -196,6 +199,7 @@
 .icon {
   font-size: 3rem;
   display: block;
+  color: #C97A3D;
 }
 
 .feature-title {
@@ -224,7 +228,7 @@
   }
   
   .section-title {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
   }
   
   .about-stats {
@@ -253,7 +257,7 @@
   }
   
   .section-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
   
   .about-stats {
@@ -268,3 +272,4 @@
     padding: 1.5rem;
   }
 }
+
