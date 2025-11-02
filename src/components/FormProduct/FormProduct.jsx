@@ -1,20 +1,24 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import api from "../../services/api";
+import { mapProductFromAPI, mapProductToAPI, parsePrice } from "../../services/productMapper";
 import "./FormProduct.css";
-
-const categories = ["Mates", "Bombillas", "Yerba", "Accesorios", "Kits"];
 
 export const FormProduct = ({ onSave, onClose }) => {
   const [form, setForm] = useState({
     name: "",
     description: "",
-    category: "",
+    categoryId: "", // Cambiar a categoryId para guardar el ID de la categoría
     price: "",
     image: "",
+    stock: "",
   });
+  const [categories, setCategories] = useState([]); // Categorías desde el API
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -24,28 +28,83 @@ export const FormProduct = ({ onSave, onClose }) => {
   const isEditing = !!editProductId;
 
   useEffect(() => {
-    if (isEditing) {
-      // Fetch the product data when editing
-      fetch(`http://localhost:3000/productos/${editProductId}`)
-        .then(response => response.json())
-        .then(productData => {
-          setForm(productData);
-          setLoading(false);
-        })
-        .catch(error => {
-          console.error('Error fetching product:', error);
-          setLoading(false);
-        });
-    } else {
-      setForm({
-        name: "",
-        description: "",
-        category: categories[0],
-        price: "",
-        image: "",
-      });
-      setLoading(false);
-    }
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Cargar categorías desde el API
+        let apiCategories = [];
+        try {
+          apiCategories = await api.getCategories();
+          console.log('Categorías cargadas:', apiCategories);
+          
+          // Validar que las categorías tengan el formato correcto
+          if (!Array.isArray(apiCategories)) {
+            console.error('Las categorías no son un array:', apiCategories);
+            throw new Error('Formato de categorías inválido');
+          }
+          
+          if (apiCategories.length === 0) {
+            console.warn('No se encontraron categorías');
+          }
+          
+          setCategories(apiCategories);
+        } catch (catError) {
+          console.error('Error cargando categorías:', catError);
+          setError(`Error al cargar las categorías: ${catError.message || 'Error desconocido'}`);
+          setCategories([]); // Establecer array vacío para evitar errores
+        }
+        
+        if (isEditing && editProductId) {
+          try {
+            // Fetch the product data when editing
+            const apiProduct = await api.getProduct(editProductId);
+            const mappedProduct = mapProductFromAPI(apiProduct);
+            
+            // Obtener el ID de la primera categoría
+            let categoryId = "";
+            if (mappedProduct.categories && mappedProduct.categories.length > 0) {
+              const firstCategory = mappedProduct.categories[0];
+              categoryId = typeof firstCategory === 'object' ? String(firstCategory.id) : String(firstCategory);
+            } else if (apiCategories.length > 0) {
+              categoryId = String(apiCategories[0].id);
+            }
+            
+            setForm({
+              name: mappedProduct.name || "",
+              description: mappedProduct.description || "",
+              categoryId: categoryId,
+              price: mappedProduct.price || "",
+              image: mappedProduct.image || "",
+              stock: mappedProduct.stock?.toString() || "",
+            });
+          } catch (productError) {
+            console.error('Error cargando producto:', productError);
+            setError(`Error al cargar el producto: ${productError.message || 'Error desconocido'}`);
+          }
+        } else {
+          // Valores por defecto para nuevo producto
+          const defaultCategoryId = apiCategories.length > 0 ? String(apiCategories[0].id) : "";
+          setForm({
+            name: "",
+            description: "",
+            categoryId: defaultCategoryId,
+            price: "",
+            image: "",
+            stock: "",
+          });
+        }
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setError(`Error al cargar los datos: ${error.message || 'Error desconocido'}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [isEditing, editProductId]);
 
   const handleChange = (e) => {
@@ -66,42 +125,53 @@ export const FormProduct = ({ onSave, onClose }) => {
     e.preventDefault();
     
     try {
-      const seller = {
-        id: 1,
-        username: "JP Mates",
-      }; // Hardcoded seller for now
-
-      const productData = {
-        ...(isEditing ? { id: editProductId } : {}), // Use editProductId instead of product.id
-        ...form,
-        price: form.price ? (form.price.startsWith("$") ? form.price : `$${form.price}`) : "",
-        seller
-      };
-
-      const url = isEditing
-        ? `http://localhost:3000/productos/${editProductId}`
-        : "http://localhost:3000/productos";
-      const method = isEditing ? "PUT" : "POST";
-
-      console.log('Sending request:', {
-        url,
-        method,
-        data: productData
-      });
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      setSubmitting(true);
+      setError(null);
+      
+      // Validar campos requeridos
+      if (!form.name || !form.description || !form.categoryId || !form.price || !form.image || !form.stock) {
+        setError('Por favor completa todos los campos');
+        setSubmitting(false);
+        return;
       }
+      
+      // Validar que categoryId sea válido
+      if (!form.categoryId || form.categoryId === "") {
+        setError('Por favor selecciona una categoría');
+        setSubmitting(false);
+        return;
+      }
+      
+      // Convertir el formato del componente al formato del API
+      const componentProduct = {
+        name: form.name,
+        description: form.description,
+        price: form.price,
+        stock: parseInt(form.stock) || 0,
+        image: form.image,
+        images: [form.image], // Convertir imagen única a array
+        categories: [parseInt(form.categoryId)], // Convertir categoryId (string) a número para el array de IDs
+      };
+      
+      console.log('Component product before mapping:', componentProduct);
+      const apiData = mapProductToAPI(componentProduct);
+      console.log('API data after mapping:', apiData);
+      
+      console.log('Sending request:', {
+        isEditing,
+        editProductId,
+        apiData
+      });
 
-      const result = await response.json();
+      let result;
+      if (isEditing && editProductId) {
+        // Actualizar producto existente
+        result = await api.updateProduct(editProductId, apiData);
+      } else {
+        // Crear nuevo producto
+        result = await api.createProduct(apiData);
+      }
+      
       console.log('Success:', result);
       
       setSuccess(true);
@@ -114,7 +184,20 @@ export const FormProduct = ({ onSave, onClose }) => {
       }, 2000);
     } catch (err) {
       console.error("Error guardando producto:", err);
-      alert("Error al guardar el producto. Por favor, intenta nuevamente.");
+      let errorMessage = "Error al guardar el producto. Por favor, intenta nuevamente.";
+      
+      if (err.status === 401) {
+        errorMessage = "Debes iniciar sesión para guardar productos";
+      } else if (err.status === 403) {
+        errorMessage = "No tienes permiso para realizar esta acción";
+      } else if (err.status === 400) {
+        errorMessage = err.message || "Datos inválidos. Por favor verifica los campos";
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
+      setSubmitting(false);
     }
   };
 //formulario en modo edición
@@ -138,6 +221,11 @@ export const FormProduct = ({ onSave, onClose }) => {
         {success && (
           <div className="success-message">
             {isEditing ? "Los cambios se realizaron correctamente!" : "Producto agregado exitosamente!"}
+          </div>
+        )}
+        {error && (
+          <div className="error-message" style={{ color: 'red', marginBottom: '1rem', padding: '0.5rem', backgroundColor: '#ffe6e6', borderRadius: '4px' }}>
+            {error}
           </div>
         )}
         <div className="form-grid">
@@ -169,23 +257,40 @@ export const FormProduct = ({ onSave, onClose }) => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="category" className="form-label">
+            <label htmlFor="categoryId" className="form-label">
               Categoría
             </label>
             <select
               className="form-control"
-              id="category"
-              name="category"
-              value={form.category}
+              id="categoryId"
+              name="categoryId"
+              value={form.categoryId}
               onChange={handleChange}
               required
+              disabled={loading || categories.length === 0}
             >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
+              {loading ? (
+                <option value="">Cargando categorías...</option>
+              ) : categories.length === 0 ? (
+                <option value="">No hay categorías disponibles</option>
+              ) : (
+                categories.map((cat) => {
+                  // Manejar diferentes formatos de categoría
+                  const categoryId = String(cat.id || cat);
+                  const categoryName = cat.nombre || cat.name || String(cat);
+                  return (
+                    <option key={categoryId} value={categoryId}>
+                      {categoryName}
+                    </option>
+                  );
+                })
+              )}
             </select>
+            {categories.length === 0 && !loading && (
+              <small style={{ color: 'red', display: 'block', marginTop: '0.25rem' }}>
+                No se pudieron cargar las categorías. Por favor, recarga la página.
+              </small>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="price" className="form-label">
@@ -198,6 +303,22 @@ export const FormProduct = ({ onSave, onClose }) => {
               name="price"
               value={form.price}
               onChange={handleChange}
+              placeholder="$0.00"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="stock" className="form-label">
+              Stock
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              id="stock"
+              name="stock"
+              value={form.stock}
+              onChange={handleChange}
+              min="0"
               required
             />
           </div>
@@ -212,13 +333,21 @@ export const FormProduct = ({ onSave, onClose }) => {
               name="image"
               value={form.image}
               onChange={handleChange}
+              placeholder="https://ejemplo.com/imagen.jpg"
               required
             />
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
-          <button type="submit" className="btn-primary submit-btn">
-            {isEditing ? "Guardar Cambios" : "Agregar Producto"}
+          <button 
+            type="submit" 
+            className="btn-primary submit-btn"
+            disabled={loading || submitting}
+          >
+            {submitting 
+              ? (isEditing ? "Guardando..." : "Agregando...") 
+              : (isEditing ? "Guardar Cambios" : "Agregar Producto")
+            }
           </button>
         </div>
       </form>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CardProduct } from '../CardProduct/CardProduct';
+import api from '../../services/api';
+import { mapProductsFromAPI, formatRating } from '../../services/productMapper';
 import './FeaturedProducts.css';
 
 const FeaturedProducts = () => {
@@ -8,17 +10,36 @@ const FeaturedProducts = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simular carga de productos destacados
+    // Cargar productos destacados desde el API
     const fetchFeaturedProducts = async () => {
       try {
-        const response = await fetch('/db.json');
-        const data = await response.json();
+        setLoading(true);
+        const apiProducts = await api.getProducts();
+        
+        // Mapear productos del formato API al formato del componente
+        const mappedProducts = mapProductsFromAPI(apiProducts);
+        
+        // Obtener estadísticas de reviews para cada producto
+        const productsWithReviews = await Promise.all(
+          mappedProducts.slice(0, 4).map(async (product) => {
+            try {
+              const stats = await api.getProductReviewStats(product.id);
+              return {
+                ...product,
+                rating: formatRating(stats.promedioValoracion || 0),
+                reviews: stats.totalReviews || 0
+              };
+            } catch (err) {
+              return product;
+            }
+          })
+        );
         
         // Tomar los primeros 4 productos como destacados
-        const featuredProducts = data.productos.slice(0, 4);
-        setProducts(featuredProducts);
+        setProducts(productsWithReviews);
       } catch (error) {
         console.error('Error loading products:', error);
+        setProducts([]); // En caso de error, mostrar array vacío
       } finally {
         setLoading(false);
       }

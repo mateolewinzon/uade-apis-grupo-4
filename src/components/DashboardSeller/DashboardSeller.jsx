@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import './DashboardSeller.css';
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api';
+import { mapProductsFromAPI } from '../../services/productMapper';
 
 export const DashboardSeller = () => {
     const [products, setProducts] = useState([]);
@@ -11,17 +13,29 @@ export const DashboardSeller = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:3000/productos')
-            .then(response => response.json())
-            .then(data => {
-                setProducts(data);
+        const fetchProducts = async () => {
+            try {
+                setLoading(true);
+                // Usar el endpoint correcto para obtener los productos del vendedor actual
+                const apiProducts = await api.getMyProducts();
+                // Mapear productos del formato API al formato del componente
+                const mappedProducts = mapProductsFromAPI(apiProducts);
+                setProducts(mappedProducts);
+                setError(null);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                // Si no está autenticado o hay error, mostrar mensaje apropiado
+                if (error.status === 401) {
+                    setError('Debes iniciar sesión para ver tus productos');
+                } else {
+                    setError(error.message || 'Error al cargar los productos');
+                }
+            } finally {
                 setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                setLoading(false);
-                setError(error);
-            });
+            }
+        };
+
+        fetchProducts();
     }, []);
 
     useEffect(() => {
@@ -45,18 +59,20 @@ export const DashboardSeller = () => {
     const handleDelete = async (productId) => {
         if (window.confirm('¿Seguro que deseas eliminar este producto?')) {
             try {
-                const response = await fetch(`http://localhost:3000/productos/${productId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    setProducts(products.filter(product => product.id !== productId));
-                } else {
-                    alert('Error al eliminar el producto');
-                }
+                await api.deleteProduct(productId);
+                // Actualizar la lista de productos después de eliminar
+                setProducts(products.filter(product => product.id !== productId));
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error al eliminar el producto');
+                let errorMessage = 'Error al eliminar el producto';
+                if (error.status === 403) {
+                    errorMessage = 'No tienes permiso para eliminar este producto';
+                } else if (error.status === 404) {
+                    errorMessage = 'Producto no encontrado';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                alert(errorMessage);
             }
         }
     };
@@ -69,8 +85,20 @@ export const DashboardSeller = () => {
         navigate(`/form-product`);
     };
 
-    if (loading) return <div>Cargando...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (loading) return <div className="dashboard-container"><div>Cargando productos...</div></div>;
+    if (error) {
+        return (
+            <div className="dashboard-container">
+                <div className="error-message">
+                    <h2>Error</h2>
+                    <p>{typeof error === 'string' ? error : error.message || 'Error al cargar los productos'}</p>
+                    {typeof error === 'object' && error.status === 401 && (
+                        <p>Por favor, inicia sesión para ver tus productos.</p>
+                    )}
+                </div>
+            </div>
+        );
+    }
 
     const productsToShow = searchTerm ? filteredProducts : products;
 

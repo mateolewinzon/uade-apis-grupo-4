@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { useCart } from '../../context/CartContext';
-import { Link } from 'react-router-dom';
+import { useUser } from '../../context/UserContext';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../../services/api';
 import './CartPreview.css';
 
 const CartPreview = () => {
   const { cart, removeFromCart, addToCart, setCart, isCartVisible, hideCart } = useCart();
+  const { user, isAuthenticated } = useUser();
+  const navigate = useNavigate();
   const [postalCode, setPostalCode] = useState('');
   const [shippingCost, setShippingCost] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [checkoutMessage, setCheckoutMessage] = useState({ type: '', text: '' });
 
   const removeOneUnit = (productToRemove) => {
     const cartCopy = [...cart];
@@ -17,9 +23,124 @@ const CartPreview = () => {
     }
   };
 
-  const handleCheckout = () => {
-    // Aquí podrías redirigir a la página de checkout o mostrar un modal
-    alert('¡Gracias por tu compra!');
+  const handleCheckout = async () => {
+    // Verificar que el usuario esté autenticado
+    if (!isAuthenticated() || !user) {
+      setCheckoutMessage({ 
+        type: 'error', 
+        text: 'Debes iniciar sesión para realizar una compra' 
+      });
+      setTimeout(() => {
+        setCheckoutMessage({ type: '', text: '' });
+        hideCart();
+        navigate('/login');
+      }, 2000);
+      return;
+    }
+
+    // Verificar que el carrito no esté vacío
+    if (cart.length === 0) {
+      setCheckoutMessage({ 
+        type: 'error', 
+        text: 'El carrito está vacío' 
+      });
+      setTimeout(() => setCheckoutMessage({ type: '', text: '' }), 3000);
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setCheckoutMessage({ type: '', text: '' });
+
+      // Agrupar productos del carrito para obtener cantidades
+      const groupedCart = cart.reduce((acc, product) => {
+        const existingProduct = acc.find(item => item.id === product.id);
+        if (existingProduct) {
+          existingProduct.quantity += 1;
+        } else {
+          acc.push({ ...product, quantity: 1 });
+        }
+        return acc;
+      }, []);
+
+      // Crear un array de productoIds con repeticiones según la cantidad
+      const productIds = [];
+      groupedCart.forEach(item => {
+        // Repetir el ID según la cantidad en el carrito
+        for (let i = 0; i < item.quantity; i++) {
+          productIds.push(item.id);
+        }
+      });
+
+      // Obtener el ID del usuario
+      let usuarioId = user.id;
+      if (!usuarioId && user.email) {
+        usuarioId = await getUserIdByEmail(user.email);
+      }
+
+      if (!usuarioId) {
+        throw new Error('No se pudo obtener el ID del usuario');
+      }
+
+      // Crear el pedido usando el API
+      const orderData = {
+        usuarioId: usuarioId,
+        estado: 'PENDIENTE',
+        productoIds: productIds
+      };
+
+      console.log('Creating order:', orderData);
+      const createdOrder = await api.createOrder(orderData);
+      console.log('Order created:', createdOrder);
+
+      // Limpiar el carrito después de crear el pedido exitosamente
+      setCart([]);
+      
+      // Mostrar mensaje de éxito
+      setCheckoutMessage({ 
+        type: 'success', 
+        text: '¡Pedido creado exitosamente! Redirigiendo...' 
+      });
+
+      // Cerrar el carrito y redirigir después de un momento
+      setTimeout(() => {
+        hideCart();
+        navigate('/'); // Redirigir a home o página de confirmación
+        setCheckoutMessage({ type: '', text: '' });
+      }, 2000);
+
+    } catch (error) {
+      console.error('Error creating order:', error);
+      let errorMessage = 'Error al crear el pedido. Por favor, intenta nuevamente.';
+      
+      if (error.status === 401) {
+        errorMessage = 'Debes iniciar sesión para realizar una compra';
+        setTimeout(() => {
+          hideCart();
+          navigate('/login');
+        }, 2000);
+      } else if (error.status === 400) {
+        errorMessage = error.message || 'Datos inválidos. Verifica tu carrito.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      setCheckoutMessage({ type: 'error', text: errorMessage });
+      setTimeout(() => setCheckoutMessage({ type: '', text: '' }), 5000);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  // Función auxiliar para obtener el ID del usuario por email si no está en el objeto user
+  const getUserIdByEmail = async (email) => {
+    try {
+      const userData = await api.getUserByEmail(email);
+      return userData.id;
+    } catch (error) {
+      console.error('Error getting user ID:', error);
+      return null;
+    }
   };
 
   const calculateInstallments = (total) => {
@@ -195,9 +316,44 @@ const CartPreview = () => {
               <div className="installments-info">
                 {calculateInstallments(total + shippingCost)}
               </div>
-              <button className="checkout-button" onClick={handleCheckout}>
-                Iniciar compra
+              
+              {/* Mensajes de checkout */}
+              {checkoutMessage.text && (
+                <div 
+                  className={`checkout-message ${checkoutMessage.type === 'success' ? 'success' : 'error'}`}
+                  style={{
+                    padding: '0.75rem',
+                    marginBottom: '1rem',
+                    borderRadius: '4px',
+                    backgroundColor: checkoutMessage.type === 'success' ? '#d4edda' : '#f8d7da',
+                    color: checkoutMessage.type === 'success' ? '#155724' : '#721c24',
+                    border: `1px solid ${checkoutMessage.type === 'success' ? '#c3e6cb' : '#f5c6cb'}`
+                  }}
+                >
+                  {checkoutMessage.text}
+                </div>
+              )}
+              
+              <button 
+                className="checkout-button" 
+                onClick={handleCheckout}
+                disabled={isProcessing || cart.length === 0}
+              >
+                {isProcessing ? 'Procesando...' : 'Iniciar compra'}
               </button>
+              
+              {!isAuthenticated() && (
+                <p style={{ 
+                  marginTop: '0.5rem', 
+                  fontSize: '0.875rem', 
+                  color: '#666',
+                  textAlign: 'center' 
+                }}>
+                  <Link to="/login" onClick={hideCart}>
+                    Inicia sesión
+                  </Link> para continuar
+                </p>
+              )}
             </div>
           </>
         )}

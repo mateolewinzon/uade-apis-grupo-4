@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import './ProductList.css';
 import { CardProduct } from '../CardProduct/CardProduct';
+import api from '../../services/api';
+import { mapProductsFromAPI, formatRating } from '../../services/productMapper';
 
 
 export default function ProductList({ category, showSellers = false }) {
@@ -12,20 +14,42 @@ export default function ProductList({ category, showSellers = false }) {
 
     // useEffect para cargar productos desde la API
     useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                setLoading(true);
+                const apiProducts = await api.getProducts();
+                // Mapear productos del formato API al formato del componente
+                const mappedProducts = mapProductsFromAPI(apiProducts);
+                
+                // Obtener estadísticas de reviews para cada producto (opcional, para mejorar rendimiento)
+                // Nota: Esto hace una llamada por producto. Para mejor rendimiento, considera hacer esto de forma lazy
+                const productsWithReviews = await Promise.all(
+                    mappedProducts.map(async (product) => {
+                        try {
+                            const stats = await api.getProductReviewStats(product.id);
+                            return {
+                                ...product,
+                                rating: formatRating(stats.promedioValoracion || 0),
+                                reviews: stats.totalReviews || 0
+                            };
+                        } catch (err) {
+                            // Si no hay reviews o hay error, mantener valores por defecto
+                            return product;
+                        }
+                    })
+                );
+                
+                setProducts(productsWithReviews);
+                setError(null);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        let url = 'http://localhost:3000/productos';
-       
-        fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            setProducts(data);
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error('Error fetching products:', error);
-            setLoading(false);
-            setError(error);
-        });
+        fetchProducts();
     }, []);
 
     // useEffect para filtrar productos cuando cambia la categoría o el término de búsqueda
@@ -34,19 +58,35 @@ export default function ProductList({ category, showSellers = false }) {
 
         // Filtrar por categoría si existe
         if (category) {
-            filtered = filtered.filter(product => 
-                product.category && product.category.toLowerCase() === category.toLowerCase()
-            );
+            filtered = filtered.filter(product => {
+                // Verificar si la categoría coincide con el nombre de la categoría
+                if (product.category && product.category.toLowerCase() === category.toLowerCase()) {
+                    return true;
+                }
+                // También verificar en el array de categorías
+                if (product.categories && product.categories.length > 0) {
+                    return product.categories.some(cat => {
+                        const catName = typeof cat === 'object' ? cat.nombre : cat;
+                        return catName && catName.toLowerCase() === category.toLowerCase();
+                    });
+                }
+                return false;
+            });
         }
 
         // Filtrar por término de búsqueda si existe
         // Busca en nombre, descripción y categoría del producto
         if (searchTerm) {
-            filtered = filtered.filter(product => 
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (product.category && product.category.toLowerCase().includes(searchTerm.toLowerCase()))
-            );
+            filtered = filtered.filter(product => {
+                const matchesName = product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesDescription = product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesCategory = product.category && product.category.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesCategoriesArray = product.categories && product.categories.some(cat => {
+                    const catName = typeof cat === 'object' ? cat.nombre : cat;
+                    return catName && catName.toLowerCase().includes(searchTerm.toLowerCase());
+                });
+                return matchesName || matchesDescription || matchesCategory || matchesCategoriesArray;
+            });
         }
 
         setFilteredProducts(filtered);
