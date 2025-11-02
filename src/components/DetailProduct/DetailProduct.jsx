@@ -11,7 +11,7 @@ import {
   ArrowLeft 
 } from 'lucide-react';
 import api from '../../services/api';
-import { mapProductFromAPI } from '../../services/productMapper';
+import { mapProductFromAPI, formatRating } from '../../services/productMapper';
 import "./DetailProduct.css";
 
 export const DetailProduct = () => {
@@ -285,7 +285,7 @@ export const DetailProduct = () => {
                   }
                   
                 </div>
-                <span className="rating-text">{product.rating}/5 ({product.reviews} reseñas)</span>
+                <span className="rating-text">{formatRating(product.rating)}/5 ({product.reviews} reseñas)</span>
               </div>
 
               <h1 className="product-title">{product.name}</h1>
@@ -440,7 +440,7 @@ export const DetailProduct = () => {
             <h3>Reseñas y calificaciones</h3>
             <div className="reviews-summary">
               <div className="average-rating">
-                <span className="rating-number">{product.rating}</span>
+                <span className="rating-number">{formatRating(product.rating)}</span>
                 <div className="stars">
                   {"★".repeat(Math.floor(product.rating))}
                   {"☆".repeat(5 - Math.floor(product.rating))}

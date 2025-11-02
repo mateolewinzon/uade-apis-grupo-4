@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { CardProduct } from '../CardProduct/CardProduct';
 import api from '../../services/api';
-import { mapProductsFromAPI } from '../../services/productMapper';
+import { mapProductsFromAPI, formatRating } from '../../services/productMapper';
 import './FeaturedProducts.css';
 
 const FeaturedProducts = () => {
@@ -26,7 +26,7 @@ const FeaturedProducts = () => {
               const stats = await api.getProductReviewStats(product.id);
               return {
                 ...product,
-                rating: stats.promedioValoracion || 0,
+                rating: formatRating(stats.promedioValoracion || 0),
                 reviews: stats.totalReviews || 0
               };
             } catch (err) {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './ProductList.css';
 import { CardProduct } from '../CardProduct/CardProduct';
 import api from '../../services/api';
-import { mapProductsFromAPI } from '../../services/productMapper';
+import { mapProductsFromAPI, formatRating } from '../../services/productMapper';
 
 
 export default function ProductList({ category, showSellers = false }) {
@@ -29,7 +29,7 @@ export default function ProductList({ category, showSellers = false }) {
                             const stats = await api.getProductReviewStats(product.id);
                             return {
                                 ...product,
-                                rating: stats.promedioValoracion || 0,
+                                rating: formatRating(stats.promedioValoracion || 0),
                                 reviews: stats.totalReviews || 0
                             };
                         } catch (err) {

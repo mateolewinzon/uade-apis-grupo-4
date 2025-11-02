@@ -15,7 +15,7 @@ export const mapProductFromAPI = (apiProduct) => {
   
   if (reviews.length > 0) {
     const sumRating = reviews.reduce((sum, review) => sum + (review.valoracion || 0), 0);
-    rating = sumRating / reviews.length;
+    rating = Math.round((sumRating / reviews.length) * 10) / 10; // Redondear a 1 decimal
     reviewsCount = reviews.length;
   }
   
@@ -87,5 +87,13 @@ export const parsePrice = (priceString) => {
     return priceString;
   }
   return parseFloat(priceString.replace(/[^0-9.]/g, '')) || 0;
+};
+
+/**
+ * Formats rating to show max 1 decimal place
+ */
+export const formatRating = (rating) => {
+  if (!rating || rating === 0) return 0;
+  return Math.round(rating * 10) / 10; // Redondear a 1 decimal
 };
 
