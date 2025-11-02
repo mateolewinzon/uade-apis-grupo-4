@@ -10,6 +10,8 @@ import {
   CheckCircle, 
   ArrowLeft 
 } from 'lucide-react';
+import api from '../../services/api';
+import { mapProductFromAPI } from '../../services/productMapper';
 import "./DetailProduct.css";
 
 export const DetailProduct = () => {
@@ -34,62 +36,70 @@ export const DetailProduct = () => {
       try {
         setLoading(true);
         console.log('Fetching product with ID:', id);
-        console.log('URL:', `http://localhost:3000/productos/${id}`);
         
-        // First, let's test if the server is running
+        // Fetch product data from API
         let productData = null;
         try {
-          const testResponse = await fetch(`http://localhost:3000/productos/${id}`);
-          console.log('Test response status:', testResponse.status);
-          
-          if (!testResponse.ok) {
-            throw new Error(`Servidor no disponible (Status: ${testResponse.status})`);
-          }
-          
-          // Fetch product data
-          const productResponse = await fetch(`http://localhost:3000/productos/${id}`);
-          console.log('Product response status:', productResponse.status);
-          console.log('Product response ok:', productResponse.ok);
-          
-          if (!productResponse.ok) {
-            console.error('Product not found. Status:', productResponse.status);
-            throw new Error(`Producto no encontrado (Status: ${productResponse.status})`);
-          }
-          productData = await productResponse.json();
-          console.log('Product data received:', productData);
+          const apiProduct = await api.getProduct(id);
+          console.log('Product data received from API:', apiProduct);
+          // Map API product to component format
+          productData = mapProductFromAPI(apiProduct);
+          console.log('Mapped product data:', productData);
           setProduct(productData);
-        } catch (serverError) {
-          console.log('Server not available, using mock data:', serverError.message);
-        }
-
-        // Fetch reviews
-        try {
-          const reviewsResponse = await fetch(`http://localhost:3000/reseñas?productId=${id}`);
-          if (reviewsResponse.ok) {
-            const reviewsData = await reviewsResponse.json();
-            setReviews(reviewsData);
-          }
-        } catch (reviewError) {
-          console.log('Reviews not available, using mock data:', reviewError);
-
-        }
-
-        // Fetch related products (only if we have product data)
-        if (productData && productData.category) {
-          try {
-            const relatedResponse = await fetch(`http://localhost:3000/productos?category=${productData.category}&_limit=4`);
-            if (relatedResponse.ok) {
-              const relatedData = await relatedResponse.json();
-              setRelatedProducts(relatedData.filter(p => p.id !== parseInt(id)));
+          
+          // Si las reviews vienen en la respuesta del producto, usarlas directamente
+          if (productData.reviewsData && productData.reviewsData.length > 0) {
+            console.log('Using reviews from product response:', productData.reviewsData);
+            setReviews(productData.reviewsData);
+          } else {
+            // Si no vienen reviews, intentar obtenerlas por separado (fallback)
+            try {
+              const reviewsData = await api.getProductReviews(id);
+              console.log('Reviews data received from separate call:', reviewsData);
+              setReviews(reviewsData);
+            } catch (reviewError) {
+              console.log('Reviews not available:', reviewError);
+              setReviews([]);
             }
+          }
+        } catch (serverError) {
+          console.error('Error fetching product:', serverError);
+          if (serverError.status === 404) {
+            setError('Producto no encontrado');
+          } else {
+            setError('Error al cargar el producto: ' + serverError.message);
+          }
+          return;
+        }
+
+        // Fetch related products (products from same category)
+        if (productData && productData.categories && productData.categories.length > 0) {
+          try {
+            const allProducts = await api.getProducts();
+            const mappedProducts = allProducts.map(mapProductFromAPI);
+            const categoryName = productData.categories[0].nombre || productData.category;
+            
+            const related = mappedProducts
+              .filter(p => {
+                if (p.id === parseInt(id)) return false;
+                if (p.category === categoryName) return true;
+                return p.categories && p.categories.some(cat => {
+                  const catName = typeof cat === 'object' ? cat.nombre : cat;
+                  return catName === categoryName;
+                });
+              })
+              .slice(0, 4);
+            
+            setRelatedProducts(related);
           } catch (relatedError) {
-            console.log('Related products not available, using mock data:', relatedError);
+            console.log('Related products not available:', relatedError);
+            setRelatedProducts([]);
           }
         }
 
       } catch (error) {
         console.error('Error fetching data:', error);
-        setError(error.message);
+        setError(error.message || 'Error al cargar los datos');
       } finally {
         setLoading(false);
       }
@@ -112,11 +122,52 @@ export const DetailProduct = () => {
     navigate('/');
   };
 
-  const handleSubmitReview = (e) => {
+  const handleSubmitReview = async (e) => {
     e.preventDefault();
-    console.log('New review:', newReview);
-    setShowReviewForm(false);
-    setNewReview({ rating: 5, comment: '' });
+    try {
+      console.log('Submitting new review:', newReview);
+      const reviewData = {
+        productoId: parseInt(id),
+        valoracion: newReview.rating,
+        comentario: newReview.comment
+      };
+      
+      await api.createReview(reviewData);
+      
+      // Refresh product data (incluyendo reviews) en lugar de solo reviews
+      try {
+        const apiProduct = await api.getProduct(id);
+        const updatedProduct = mapProductFromAPI(apiProduct);
+        setProduct(updatedProduct);
+        
+        // Si las reviews vienen en la respuesta, actualizarlas
+        if (updatedProduct.reviewsData && updatedProduct.reviewsData.length > 0) {
+          setReviews(updatedProduct.reviewsData);
+        } else {
+          // Fallback: obtener reviews por separado
+          const reviewsData = await api.getProductReviews(id);
+          setReviews(reviewsData);
+        }
+      } catch (refreshError) {
+        console.error('Error refreshing product:', refreshError);
+        // Si falla, intentar solo obtener reviews
+        try {
+          const reviewsData = await api.getProductReviews(id);
+          setReviews(reviewsData);
+        } catch (reviewError) {
+          console.error('Error refreshing reviews:', reviewError);
+        }
+      }
+      
+      setShowReviewForm(false);
+      setNewReview({ rating: 5, comment: '' });
+      setToast({ visible: true, message: 'Reseña agregada exitosamente', type: 'success' });
+      setTimeout(() => setToast({ visible: false, message: "", type: "success" }), 2500);
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      setToast({ visible: true, message: 'Error al agregar la reseña: ' + (error.message || 'Error desconocido'), type: 'error' });
+      setTimeout(() => setToast({ visible: false, message: "", type: "success" }), 3000);
+    }
   };
 
   const formatDate = (dateString) => {
@@ -445,31 +496,39 @@ export const DetailProduct = () => {
           {/* Reviews List */}
           {reviews.length > 0 && (
             <div className="reviews-list">
-              {reviews.map((review) => (
-                <div key={review.id} className="review-item">
-                  <div className="review-header">
-                    <div className="reviewer-info">
-                      <img 
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${review.userName}`}
-                        alt={review.userName}
-                        className="reviewer-avatar"
-                      />
-                      <div className="reviewer-details">
-                        <span className="reviewer-name">{review.userName}</span>
-                        <div className="review-rating">
-                          {"★".repeat(review.rating)}
-                          {"☆".repeat(5 - review.rating)}
+              {reviews.map((review) => {
+                // Mapear campos del API a nombres del componente
+                const userName = review.usuarioNombre || review.userName || 'Usuario';
+                const rating = review.valoracion || review.rating || 0;
+                const comment = review.comentario || review.comment || '';
+                const date = review.fechaCreacion || review.date || new Date().toISOString();
+                
+                return (
+                  <div key={review.id} className="review-item">
+                    <div className="review-header">
+                      <div className="reviewer-info">
+                        <img 
+                          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`}
+                          alt={userName}
+                          className="reviewer-avatar"
+                        />
+                        <div className="reviewer-details">
+                          <span className="reviewer-name">{userName}</span>
+                          <div className="review-rating">
+                            {"★".repeat(rating)}
+                            {"☆".repeat(5 - rating)}
+                          </div>
                         </div>
                       </div>
+                      <div className="review-meta">
+                        <span className="review-date">{formatDate(date)}</span>
+                        {review.verified && <span className="verified-badge">✓ Verificado</span>}
+                      </div>
                     </div>
-                    <div className="review-meta">
-                      <span className="review-date">{formatDate(review.date)}</span>
-                      {review.verified && <span className="verified-badge">✓ Verificado</span>}
-                    </div>
+                    <p className="review-comment">{comment}</p>
                   </div>
-                  <p className="review-comment">{review.comment}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

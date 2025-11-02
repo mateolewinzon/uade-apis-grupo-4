@@ -119,7 +119,7 @@ export const Header = () => {
           </button>
           
           {/* Sección de usuario - Mostramos diferentes contenidos según si está logueado o no */}
-          {isAuthenticated() ? (
+          {isAuthenticated() && user ? (
             // Usuario logueado - Mostramos dropdown con opciones (controlado por click)
             <div 
               ref={userMenuRef}
@@ -128,18 +128,18 @@ export const Header = () => {
             >
               <div className="user-info">
                 <img 
-                  src={user.avatar} 
-                  alt={user.username} 
+                  src={user.avatar || '/placeholder-user.jpg'} 
+                  alt={user.username || user.email || 'User'} 
                   className="user-avatar"
                 />
-                <span className="user-name">Hola, {user.nombre}</span>
+                <span className="user-name">Hola, {user.nombre || user.email || 'Usuario'}</span>
                 <span className={`dropdown-arrow ${isUserDropdownOpen ? 'open' : ''}`}>▼</span>
               </div>
               {isUserDropdownOpen && (
                 <div className="dropdown-menu user-dropdown">
                   <div className="dropdown-item user-details">
-                    <strong>{user.nombre} {user.apellido}</strong>
-                    <small>{user.email}</small>
+                    <strong>{user.nombre || ''} {user.apellido || ''}</strong>
+                    <small>{user.email || ''}</small>
                   </div>
                   <hr />
                   <Link to="/dashboard" className="dropdown-item" onClick={handleLinkClick}>
@@ -216,11 +216,15 @@ export const Header = () => {
           </Link>
 
           {/* Sección de usuario en móvil */}
-          {isAuthenticated() ? (
+          {isAuthenticated() && user ? (
             <div className="mobile-user-section">
               <div className="mobile-user-info">
-                <img src={user.avatar} alt={user.username} className="mobile-user-avatar" />
-                <span className="mobile-user-name">Hola, {user.nombre}</span>
+                <img 
+                  src={user.avatar || '/placeholder-user.jpg'} 
+                  alt={user.username || user.email || 'User'} 
+                  className="mobile-user-avatar" 
+                />
+                <span className="mobile-user-name">Hola, {user.nombre || user.email || 'Usuario'}</span>
               </div>
               <Link to="/dashboard" className="mobile-nav-link" onClick={handleLinkClick}>
                 Mi Dashboard

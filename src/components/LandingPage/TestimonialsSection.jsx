@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
+import api from '../../services/api';
 import './TestimonialsSection.css';
 
 const TestimonialsSection = () => {
@@ -7,25 +8,37 @@ const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Simular carga de testimonios
+    // Cargar testimonios (reviews) desde el API
     const fetchTestimonials = async () => {
       try {
-        const response = await fetch('/db.json');
-        const data = await response.json();
+        // Obtener todas las reviews del API
+        const reviewsData = await api.getReviews();
         
-        // Tomar las primeras 6 reseñas como testimonios
-        const testimonialsData = data.reseñas.slice(0, 6).map(review => ({
+        // Obtener todos los productos para mapear nombres
+        let productsMap = new Map();
+        try {
+          const productsData = await api.getProducts();
+          productsData.forEach(product => {
+            productsMap.set(product.id, product.nombre);
+          });
+        } catch (productError) {
+          console.warn('Could not load products for testimonials:', productError);
+        }
+        
+        // Mapear reviews del formato API al formato del componente
+        const testimonialsData = reviewsData.slice(0, 6).map(review => ({
           id: review.id,
-          name: review.userName,
-          rating: review.rating,
-          comment: review.comment,
-          product: data.productos.find(p => p.id === review.productId.toString())?.name || 'Producto',
-          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${review.userName}`
+          name: review.usuarioNombre || review.userName || 'Usuario',
+          rating: review.valoracion || review.rating || 0,
+          comment: review.comentario || review.comment || '',
+          product: productsMap.get(review.productoId) || review.productoNombre || 'Producto',
+          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${review.usuarioNombre || review.userName || 'Usuario'}`
         }));
         
         setTestimonials(testimonialsData);
       } catch (error) {
         console.error('Error loading testimonials:', error);
+        setTestimonials([]); // En caso de error, mostrar array vacío
       }
     };
 

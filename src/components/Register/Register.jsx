@@ -14,10 +14,15 @@ export const Register = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
-    username: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    direccion: {
+      calle: "",
+      ciudad: "",
+      codigoPostal: "",
+      pais: "Argentina"
+    }
   });
   
   // Estados para manejar la UI del formulario
@@ -28,11 +33,24 @@ export const Register = () => {
   // Función que se ejecuta cuando el usuario escribe en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Actualizamos el estado del formulario manteniendo los valores anteriores
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    // Si el campo es parte de direccion, actualizar el objeto direccion
+    if (name.startsWith('direccion.')) {
+      const direccionField = name.split('.')[1];
+      setFormData(prev => ({
+        ...prev,
+        direccion: {
+          ...prev.direccion,
+          [direccionField]: value
+        }
+      }));
+    } else {
+      // Actualizamos el estado del formulario manteniendo los valores anteriores
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
     
     // Limpiamos los mensajes de error y éxito cuando el usuario empieza a escribir
     if (error) setError("");
@@ -41,9 +59,10 @@ export const Register = () => {
 
   // Función para validar los datos del formulario antes de enviar
   const validateForm = () => {
-    // Verificamos que todos los campos estén completos
-    if (!formData.nombre || !formData.apellido || !formData.username || 
-        !formData.email || !formData.password || !formData.confirmPassword) {
+    // Verificamos que todos los campos obligatorios estén completos
+    if (!formData.nombre || !formData.apellido || 
+        !formData.email || !formData.password || !formData.confirmPassword ||
+        !formData.direccion.calle || !formData.direccion.ciudad || !formData.direccion.codigoPostal) {
       return "Todos los campos son obligatorios";
     }
 
@@ -85,9 +104,10 @@ export const Register = () => {
       const userData = {
         nombre: formData.nombre,
         apellido: formData.apellido,
-        username: formData.username,
         email: formData.email,
-        password: formData.password // Se guarda en texto plano como solicitaste
+        password: formData.password,
+        direccion: formData.direccion,
+        role: 'USER' // Por defecto USER, se puede cambiar a ADMIN si es necesario
       };
 
       // Llamamos a la función register del contexto
@@ -148,21 +168,6 @@ export const Register = () => {
             </div>
           </div>
 
-          {/* Campo para nombre de usuario */}
-          <div className="form-group">
-            <label htmlFor="username">Nombre de Usuario</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Elige un nombre de usuario único"
-              className="form-input"
-              disabled={loading}
-            />
-          </div>
-
           {/* Campo para email */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -173,6 +178,64 @@ export const Register = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="tu@email.com"
+              className="form-input"
+              disabled={loading}
+            />
+          </div>
+
+          {/* Fila para dirección */}
+          <div className="form-group">
+            <label htmlFor="direccion.calle">Dirección (Calle)</label>
+            <input
+              type="text"
+              id="direccion.calle"
+              name="direccion.calle"
+              value={formData.direccion.calle}
+              onChange={handleChange}
+              placeholder="Calle y número"
+              className="form-input"
+              disabled={loading}
+            />
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="direccion.ciudad">Ciudad</label>
+              <input
+                type="text"
+                id="direccion.ciudad"
+                name="direccion.ciudad"
+                value={formData.direccion.ciudad}
+                onChange={handleChange}
+                placeholder="Ciudad"
+                className="form-input"
+                disabled={loading}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="direccion.codigoPostal">Código Postal</label>
+              <input
+                type="text"
+                id="direccion.codigoPostal"
+                name="direccion.codigoPostal"
+                value={formData.direccion.codigoPostal}
+                onChange={handleChange}
+                placeholder="Código postal"
+                className="form-input"
+                disabled={loading}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="direccion.pais">País</label>
+            <input
+              type="text"
+              id="direccion.pais"
+              name="direccion.pais"
+              value={formData.direccion.pais}
+              onChange={handleChange}
+              placeholder="País"
               className="form-input"
               disabled={loading}
             />
