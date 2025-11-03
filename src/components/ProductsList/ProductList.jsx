@@ -59,15 +59,15 @@ export default function ProductList({ category, showSellers = false }) {
         // Filtrar por categoría si existe
         if (category) {
             filtered = filtered.filter(product => {
-                // Verificar si la categoría coincide con el nombre de la categoría
-                if (product.category && product.category.toLowerCase() === category.toLowerCase()) {
+                // Verificar si la categoría coincide con el nombre de la categoría (búsqueda parcial)
+                if (product.category && product.category.toLowerCase().includes(category.toLowerCase())) {
                     return true;
                 }
-                // También verificar en el array de categorías
+                // También verificar en el array de categorías (búsqueda parcial)
                 if (product.categories && product.categories.length > 0) {
                     return product.categories.some(cat => {
                         const catName = typeof cat === 'object' ? cat.nombre : cat;
-                        return catName && catName.toLowerCase() === category.toLowerCase();
+                        return catName && catName.toLowerCase().includes(category.toLowerCase());
                     });
                 }
                 return false;
